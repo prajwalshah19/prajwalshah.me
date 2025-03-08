@@ -38,5 +38,5 @@ jobs:
         with:
           github_token: ${{ secrets.GH_PAGES_TOKEN }}
           publish_dir: app/dist
-          destination_repo: prajwalshah19/prajwalshah19.github.io
+          external_repository: prajwalshah19/prajwalshah19.github.io
           publish_branch: build
