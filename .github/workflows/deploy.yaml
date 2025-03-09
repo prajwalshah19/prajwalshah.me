@@ -36,7 +36,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GH_PAGES_TOKEN }}
+          personal_token: ${{ secrets.GH_PAGES_TOKEN }}
           publish_dir: app/dist
           external_repository: prajwalshah19/prajwalshah19.github.io
           publish_branch: build
