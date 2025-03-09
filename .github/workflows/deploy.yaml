@@ -28,8 +28,8 @@ jobs:
       - name: Build React App
         working-directory: app
         env:
-          VITE_SANITY_PROJECT_ID: ${{ secrets.VITE_SANITY_PROJECT_ID }}
-          VITE_SANITY_DATASET: ${{ secrets.VITE_SANITY_DATASET }}
+          VITE_SANITY_PROJECT_ID: ${{ import.meta.env.VITE_SANITY_PROJECT_ID }}
+          VITE_SANITY_DATASET: ${{ import.meta.env.VITE_SANITY_DATASET }}
         run: yarn build
 
       # Deploy the build folder from the app directory to the GitHub Pages repo

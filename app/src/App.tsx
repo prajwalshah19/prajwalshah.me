@@ -12,7 +12,6 @@ const About = lazy(() => import("./pages/About"));
 const Projects = lazy(() => import("./pages/Projects"));
 
 function App() {
-  console.log(import.meta.env.VITE_SANITY_PROJECT_ID, import.meta.env.VITE_SANITY_DATASET)
   return (
     <BrowserRouter>
     <ScrollToTop />
