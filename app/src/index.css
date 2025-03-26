@@ -1,20 +1,20 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-
-  --color-primary:  #023020;
-  --color-accent: #FFD700;
+  --color-primary: #023020;
+  --color-accent: #ffd700;
   --color-secondary: #ffffff;
   --color-dark: #000000;
 
-  --font-display: "Oswald", "sans-serif";
-  --font-body: "Roboto", "sans-serif";
-  --font-mono: "Space Mono", "monospace";
+  --font-display: 'Oswald', 'sans-serif';
+  --font-body: 'Roboto', 'sans-serif';
+  --font-mono: 'Space Mono', 'monospace';
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }

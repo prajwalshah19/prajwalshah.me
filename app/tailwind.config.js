@@ -18,6 +18,9 @@ module.exports = {
           body: ['Roboto', 'sans-serif'],       // Clean, modern body text
           mono: ['Space Mono', 'monospace'],      // For code snippets or technical sections
         },
+        screens: {
+          smalli: { raw: '(max-width: 375px) and (max-height: 667px)' },
+        },
       },
     },
     plugins: [],

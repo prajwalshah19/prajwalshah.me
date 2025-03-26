@@ -21,7 +21,9 @@ const Contact: React.FC = () => {
   });
   const [contactText, setContactText] = useState<RichText | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -32,15 +34,14 @@ const Contact: React.FC = () => {
     setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
-  
-      useEffect(() => {
-        getContactText()
-          .then((data) => {
-            //console.log('Fetched contact:', data);
-            setContactText(data);
-          })
-          .catch((error) => console.error('Error fetching bio:', error));
-      }, []);
+  useEffect(() => {
+    getContactText()
+      .then((data) => {
+        //console.log('Fetched contact:', data);
+        setContactText(data);
+      })
+      .catch((error) => console.error('Error fetching bio:', error));
+  }, []);
 
   return (
     <ContentPage>
@@ -55,7 +56,7 @@ const Contact: React.FC = () => {
               Prajwal Shah
             </h2>
             <div className="text-lg text-primary dark:text-secondary">
-              <PortableText value = {contactText?.content} />
+              <PortableText value={contactText?.content} />
             </div>
             <MiniSocialLinks />
           </div>
@@ -63,7 +64,10 @@ const Contact: React.FC = () => {
           <div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block font-body text-primary dark:text-secondary mb-1">
+                <label
+                  htmlFor="name"
+                  className="block font-body text-primary dark:text-secondary mb-1"
+                >
                   Name
                 </label>
                 <input
@@ -77,7 +81,10 @@ const Contact: React.FC = () => {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block font-body text-primary dark:text-secondary mb-1">
+                <label
+                  htmlFor="email"
+                  className="block font-body text-primary dark:text-secondary mb-1"
+                >
                   Email
                 </label>
                 <input
@@ -91,7 +98,10 @@ const Contact: React.FC = () => {
                 />
               </div>
               <div>
-                <label htmlFor="subject" className="block font-body text-primary dark:text-secondary mb-1">
+                <label
+                  htmlFor="subject"
+                  className="block font-body text-primary dark:text-secondary mb-1"
+                >
                   Subject
                 </label>
                 <input
@@ -105,7 +115,10 @@ const Contact: React.FC = () => {
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block font-body text-primary dark:text-secondary mb-1">
+                <label
+                  htmlFor="message"
+                  className="block font-body text-primary dark:text-secondary mb-1"
+                >
                   Message
                 </label>
                 <textarea

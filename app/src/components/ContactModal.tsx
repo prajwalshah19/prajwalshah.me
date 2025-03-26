@@ -28,9 +28,14 @@ const ContactModal: React.FC<ContactModalProps> = ({ onClose }) => {
         >
           <X className="w-6 h-6 text-primary dark:text-secondary" />
         </button>
-        <h2 className="text-3xl font-bold text-primary dark:text-secondary mb-4">Contact Me</h2>
+        <h2 className="text-3xl font-bold text-primary dark:text-secondary mb-4">
+          Contact Me
+        </h2>
         <p className="text-lg text-primary dark:text-secondary mb-4">
-          You can reach me at <a href="mailto:your-email@example.com" className="underline">your-email@example.com</a>
+          You can reach me at{' '}
+          <a href="mailto:your-email@example.com" className="underline">
+            your-email@example.com
+          </a>
         </p>
         <p className="text-base text-primary dark:text-secondary">
           Or feel free to drop me a message below.

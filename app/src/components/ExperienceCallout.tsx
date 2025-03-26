@@ -7,7 +7,9 @@ interface ExperienceCalloutProps {
   scrollToExperience: () => void;
 }
 
-const ExperienceCallout: React.FC<ExperienceCalloutProps> = ({ scrollToExperience }) => {
+const ExperienceCallout: React.FC<ExperienceCalloutProps> = ({
+  scrollToExperience,
+}) => {
   return (
     <motion.div
       onClick={scrollToExperience}

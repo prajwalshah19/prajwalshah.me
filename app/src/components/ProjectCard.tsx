@@ -34,10 +34,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         target="_blank"
         rel="noopener noreferrer"
         className="inline-flex items-center text-primary dark:text-secondary hover:underline"
-        >
+      >
         <span>View</span>
         <ArrowUpRight className="w-4 h-4 ml-1" />
-    </a>
+      </a>
     </div>
   );
 };

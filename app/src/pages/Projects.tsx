@@ -1,10 +1,9 @@
 // src/pages/Projects.tsx
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ContentPage from '../components/ContentPage';
 import ProjectCard from '../components/ProjectCard';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getProjects, Project } from '../services/projectData';
-
 
 const Projects: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -16,7 +15,8 @@ const Projects: React.FC = () => {
     getProjects()
       .then((data: Project[]) => {
         //console.log("Fetched projects:", data);
-        setProjects(data)})
+        setProjects(data);
+      })
       .catch(console.error);
   }, []);
 
@@ -44,7 +44,7 @@ const Projects: React.FC = () => {
           ))}
         </div>
         <div className="flex justify-center items-center space-x-4 mt-8">
-        <button
+          <button
             onClick={goToPrevPage}
             disabled={currentPage === 1}
             className="flex items-center text-primary dark:text-secondary hover:underline disabled:opacity-50"

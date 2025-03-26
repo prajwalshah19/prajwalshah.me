@@ -1,7 +1,7 @@
 // src/pages/Home.tsx
 import React from 'react';
-import Hero from '../components/Hero'
-import Bio from '../components/Bio'
+import Hero from '../components/Hero';
+import Bio from '../components/Bio';
 import ThemeToggle from '../components/ThemeToggle';
 
 const Home: React.FC = () => {
@@ -14,12 +14,11 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className = "bg:secondary dark:bg-primary mx-auto w-screen h-screen">
-        <ThemeToggle />
-        <Hero scrollToBio={scrollToBio}/>
-        <Bio />
+    <div className="bg:secondary dark:bg-primary mx-auto w-screen h-screen">
+      <ThemeToggle />
+      <Hero scrollToBio={scrollToBio} />
+      <Bio />
     </div>
-
   );
 };
 

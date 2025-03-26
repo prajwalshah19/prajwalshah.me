@@ -19,7 +19,9 @@ const Timeline: React.FC<TimelineProps> = ({ entries }) => {
             )}
           </div>
           <div>
-            <p className="text-sm text-primary dark:text-secondary">{entry.dateRange}</p>
+            <p className="text-sm text-primary dark:text-secondary">
+              {entry.dateRange}
+            </p>
             <h3 className="text-xl font-bold text-primary dark:text-secondary">
               {entry.position}
             </h3>

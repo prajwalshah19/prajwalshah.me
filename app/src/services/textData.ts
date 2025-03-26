@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/services/textData.ts
-import { client } from "./sanity";
+import { client } from './sanity';
 
 export interface RichText {
   _id: string;
@@ -9,21 +9,21 @@ export interface RichText {
 }
 
 export interface PlainText extends Omit<RichText, 'content'> {
-    content: string;
-  }
+  content: string;
+}
 
 // A general function to fetch a text document by its label
 export const getRichTextByLabel = async <T extends 'richText' | 'plainText'>(
-    label: string,
-    type: T = 'richText' as T
-  ): Promise<T extends 'richText' ? RichText : PlainText> => {
-    const query = `*[_type == $type && label == $label][0]{
+  label: string,
+  type: T = 'richText' as T
+): Promise<T extends 'richText' ? RichText : PlainText> => {
+  const query = `*[_type == $type && label == $label][0]{
       _id,
       label,
       content
     }`;
-    return client.fetch(query, { label, type });
-  };
+  return client.fetch(query, { label, type });
+};
 
 // Specific functions for each occurrence
 export const getBioText = async (): Promise<RichText> => {
@@ -43,10 +43,9 @@ export const getContactText = async (): Promise<RichText> => {
 };
 
 export const getGithubLink = async (): Promise<PlainText> => {
-    return getRichTextByLabel('githubLink', 'plainText');
-}
+  return getRichTextByLabel('githubLink', 'plainText');
+};
 
 export const getLinkedinLink = async (): Promise<PlainText> => {
-    return getRichTextByLabel('linkedinLink', 'plainText');
-}
-
+  return getRichTextByLabel('linkedinLink', 'plainText');
+};

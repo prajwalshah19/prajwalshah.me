@@ -15,13 +15,14 @@ const More: React.FC = () => {
   const indexOfFirst = indexOfLast - articlesPerPage;
   const currentArticles = articles.slice(indexOfFirst, indexOfLast);
 
-    useEffect(() => {
-      getArticles()
-        .then((data: Article[]) => {
-          //console.log("Fetched articles", data);
-          setArticles(data)})
-        .catch(console.error);
-    }, []);
+  useEffect(() => {
+    getArticles()
+      .then((data: Article[]) => {
+        //console.log("Fetched articles", data);
+        setArticles(data);
+      })
+      .catch(console.error);
+  }, []);
 
   const goToNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);

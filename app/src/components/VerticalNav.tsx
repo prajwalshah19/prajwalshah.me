@@ -17,7 +17,7 @@ export interface VerticalNavProps {
 const VerticalNav: React.FC<VerticalNavProps> = ({ header, links }) => {
   const location = useLocation();
   const MotionLink = motion(Link);
-  
+
   return (
     <div className="flex flex-col items-start space-y-4">
       <h2 className="lg:text-6xl text-3xl font-bold font-body text-primary dark:text-secondary">
@@ -41,7 +41,6 @@ const VerticalNav: React.FC<VerticalNavProps> = ({ header, links }) => {
             </MotionLink>
           );
         })}
-
       </div>
     </div>
   );

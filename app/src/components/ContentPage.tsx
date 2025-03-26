@@ -20,7 +20,7 @@ const menuItems = [
 
 const ContentPage: React.FC<ContentPageProps> = ({ children }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const toggleMenu = () => setMenuOpen(prev => !prev);
+  const toggleMenu = () => setMenuOpen((prev) => !prev);
 
   return (
     <div className="flex flex-col min-h-screen relative w-full bg-secondary dark:bg-primary">
@@ -45,9 +45,7 @@ const ContentPage: React.FC<ContentPageProps> = ({ children }) => {
       </div>
 
       {/* Main Content Area */}
-      <main className="flex-grow pt-20 lg:pt-2">
-        {children}
-      </main>
+      <main className="flex-grow pt-20 lg:pt-2">{children}</main>
 
       {/* Footer always sticks to bottom */}
       <Footer />
@@ -64,7 +62,10 @@ const ContentPage: React.FC<ContentPageProps> = ({ children }) => {
             <div className="bg-transparent p-4">
               <ul className="space-y-6 text-center">
                 {menuItems.map((item, index) => (
-                  <li key={index} className="text-3xl text-primary dark:text-secondary font-body">
+                  <li
+                    key={index}
+                    className="text-3xl text-primary dark:text-secondary font-body"
+                  >
                     <Link
                       to={item.url}
                       onClick={toggleMenu}

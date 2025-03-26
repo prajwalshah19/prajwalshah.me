@@ -7,7 +7,7 @@ const GotoNav: React.FC = () => {
     { label: 'About', url: '/about' },
     { label: 'Projects', url: '/projects' },
     { label: 'More', url: '/more' },
-    { label: 'Contact', url: '/contact' }
+    { label: 'Contact', url: '/contact' },
   ];
 
   return <VerticalNav header="Goto" links={gotoLinks} />;

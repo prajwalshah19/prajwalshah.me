@@ -16,7 +16,7 @@ const AboutExperience: React.FC = () => {
         //console.log("Fetched experiences:", data);
         setTimelineData(data);
       })
-      .catch((error) => console.error("Error fetching experiences:", error));
+      .catch((error) => console.error('Error fetching experiences:', error));
   }, []);
 
   useEffect(() => {
@@ -25,9 +25,8 @@ const AboutExperience: React.FC = () => {
         //console.log("Fetched experience text:", data);
         setExperienceText(data);
       })
-      .catch((error) => console.error("Error fetching experiences:", error));
+      .catch((error) => console.error('Error fetching experiences:', error));
   }, []);
-
 
   return (
     <div className="flex flex-col items-start h-[98vh]" id="experience">
@@ -35,7 +34,7 @@ const AboutExperience: React.FC = () => {
         My Journey
       </h2>
       <div className="text-lg text-primary dark:text-secondary mb-8">
-        <PortableText value = {experienceText?.content} />
+        <PortableText value={experienceText?.content} />
       </div>
       <Timeline entries={timelineData} />
     </div>

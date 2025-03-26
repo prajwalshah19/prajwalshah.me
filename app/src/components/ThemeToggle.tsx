@@ -4,7 +4,9 @@ import { Sun, Moon } from 'lucide-react';
 
 const ThemeToggle: React.FC = () => {
   // Initialize theme state based on <html> class
-  const initialTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  const initialTheme = document.documentElement.classList.contains('dark')
+    ? 'dark'
+    : 'light';
   const [currentTheme, setCurrentTheme] = useState<string>(initialTheme);
 
   useEffect(() => {
@@ -13,11 +15,11 @@ const ThemeToggle: React.FC = () => {
 
   const toggleTheme = () => {
     if (document.documentElement.classList.contains('dark')) {
-      document.documentElement.classList.replace("dark", "light")
+      document.documentElement.classList.replace('dark', 'light');
       localStorage.setItem('theme', 'light');
       setCurrentTheme('light');
-    } else if (document.documentElement.classList.contains('light')){
-      document.documentElement.classList.replace("light", "dark")
+    } else if (document.documentElement.classList.contains('light')) {
+      document.documentElement.classList.replace('light', 'dark');
       //document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
       setCurrentTheme('dark');

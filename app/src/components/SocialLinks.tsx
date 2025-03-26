@@ -1,8 +1,12 @@
 // src/components/SocialLinks.tsx
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { PlainText, getGithubLink, getLinkedinLink } from '../services/textData';
+import {
+  PlainText,
+  getGithubLink,
+  getLinkedinLink,
+} from '../services/textData';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -29,31 +33,30 @@ const SocialLinks: React.FC = () => {
     { label: 'resume', url: '#' },
   ];
 
-    useEffect(() => {
-      getGithubLink()
-        .then((data: PlainText) => {
-          //console.log("Fetched experiences:", data);
-          setGithubLink(data);
-        })
-        .catch((error) => console.error("Error fetching github link", error));
-    }, []);
+  useEffect(() => {
+    getGithubLink()
+      .then((data: PlainText) => {
+        //console.log("Fetched experiences:", data);
+        setGithubLink(data);
+      })
+      .catch((error) => console.error('Error fetching github link', error));
+  }, []);
 
-
-    useEffect(() => {
-      getLinkedinLink()
-        .then((data: PlainText) => {
-          //console.log("Fetched experiences:", data);
-          setLinkedinLink(data);
-        })
-        .catch((error) => console.error("Error fetching linkedin link", error));
-    }, []);
+  useEffect(() => {
+    getLinkedinLink()
+      .then((data: PlainText) => {
+        //console.log("Fetched experiences:", data);
+        setLinkedinLink(data);
+      })
+      .catch((error) => console.error('Error fetching linkedin link', error));
+  }, []);
 
   return (
     <motion.div
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="flex flex-col lg:flex-row items-center justify-evenly h-[30vh] w-full text-4xl lg:text-5xl text-primary dark:text-secondary font-body pt-8 pb-8 mt-12 lg:mt-0"
+      className="hidden lg:flex lg:flex-row items-center justify-evenly h-[30vh] w-full text-4xl lg:text-5xl text-primary dark:text-secondary font-body pt-8 pb-8 mt-12 lg:mt-0"
     >
       {links.map((link, index) => (
         <motion.a

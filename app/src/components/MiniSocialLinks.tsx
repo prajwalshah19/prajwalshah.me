@@ -1,8 +1,12 @@
 // src/components/MiniSocialLinks.tsx
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { PlainText, getGithubLink, getLinkedinLink } from '../services/textData';
+import {
+  PlainText,
+  getGithubLink,
+  getLinkedinLink,
+} from '../services/textData';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -29,24 +33,23 @@ const MiniSocialLinks: React.FC = () => {
     { label: 'resume', url: '#' },
   ];
 
-    useEffect(() => {
-      getGithubLink()
-        .then((data: PlainText) => {
-          //console.log("Fetched experiences:", data);
-          setGithubLink(data);
-        })
-        .catch((error) => console.error("Error fetching github link", error));
-    }, []);
+  useEffect(() => {
+    getGithubLink()
+      .then((data: PlainText) => {
+        //console.log("Fetched experiences:", data);
+        setGithubLink(data);
+      })
+      .catch((error) => console.error('Error fetching github link', error));
+  }, []);
 
-
-    useEffect(() => {
-      getLinkedinLink()
-        .then((data: PlainText) => {
-          //console.log("Fetched experiences:", data);
-          setLinkedinLink(data);
-        })
-        .catch((error) => console.error("Error fetching linkedin link", error));
-    }, []);
+  useEffect(() => {
+    getLinkedinLink()
+      .then((data: PlainText) => {
+        //console.log("Fetched experiences:", data);
+        setLinkedinLink(data);
+      })
+      .catch((error) => console.error('Error fetching linkedin link', error));
+  }, []);
 
   return (
     <motion.div
@@ -57,7 +60,7 @@ const MiniSocialLinks: React.FC = () => {
     >
       {links.map((link, index) => (
         <motion.a
-          target = "_blank"
+          target="_blank"
           key={index}
           href={link.url}
           variants={itemVariants}

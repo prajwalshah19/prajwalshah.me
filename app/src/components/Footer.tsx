@@ -7,7 +7,7 @@ const menuItems = [
   { label: 'About', url: '/about' },
   { label: 'Projects', url: '/projects' },
   { label: 'More', url: '/more' },
-  { label: 'Contact', url: '/contact' }
+  { label: 'Contact', url: '/contact' },
 ];
 
 const Footer: React.FC = () => {
@@ -19,8 +19,8 @@ const Footer: React.FC = () => {
           <ul className="flex flex-row items-center justify-center space-x-4">
             {menuItems.map((item, index) => (
               <li key={index}>
-                <Link 
-                  to={item.url} 
+                <Link
+                  to={item.url}
                   className="text-primary dark:text-secondary hover:underline text-base"
                 >
                   {item.label}
