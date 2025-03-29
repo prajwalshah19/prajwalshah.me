@@ -1,0 +1,80 @@
+.markdown-body {
+  background-color: transparent !important;
+  color: var(--color-primary) !important;
+}
+
+.dark .markdown-body {
+  color: var(--color-secondary) !important;
+}
+
+.markdown-body h1 {
+  /* title of every page should be in the display font */
+  font-family: var(--font-body) !important;
+}
+
+.markdown-body pre {
+  background-color: #f6f8fa;
+  border-radius: 6px;
+  padding: 1em;
+  overflow: auto;
+  font-family: var(--font-mono) !important;
+  font-size: 0.9em;
+  margin-bottom: 1em;
+}
+
+.markdown-body code {
+  color: var(--color-primary);
+}
+
+.markdown-body table {
+  width: auto;
+  border-collapse: collapse;
+}
+
+.markdown-body th,
+.markdown-body td {
+  width: auto;
+  padding: 0.6em 1em;
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+
+.dark .markdown-body th,
+.dark .markdown-body td {
+  border-color: var(--color-secondary);
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+/* Blockquotes */
+.markdown-body blockquote {
+  border-left: 4px solid #dfe2e5;
+  padding-left: 1em;
+  color: #6a737d;
+  margin: 1em 0;
+}
+
+.dark .markdown-body blockquote {
+  border-color: #555;
+  color: #aaa;
+}
+
+/* Lists */
+.markdown-body ul,
+.markdown-body ol {
+  margin-left: 2em;
+  margin-bottom: 1em;
+}
+
+/* Images */
+.markdown-body img {
+  max-width: 100%;
+  border-radius: 6px;
+}
+
+/* Links */
+.markdown-body a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}

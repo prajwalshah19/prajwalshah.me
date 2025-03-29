@@ -9,6 +9,7 @@ export interface Project {
   dates: string;
   date: string;
   tags: string[];
+  content: string;
 }
 
 export const getProjects = async (): Promise<Project[]> => {
@@ -19,7 +20,8 @@ export const getProjects = async (): Promise<Project[]> => {
       description,
       dates,
       date,
-      tags
+      tags,
+      content
     }`;
   return await client.fetch(query);
 };

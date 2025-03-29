@@ -56,7 +56,7 @@ const MiniSocialLinks: React.FC = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="flex flex-row items-center justify-center space-x-4 w-full"
+      className="flex flex-row items-center justify-center space-x-4 w-full pt-1"
     >
       {links.map((link, index) => (
         <motion.a

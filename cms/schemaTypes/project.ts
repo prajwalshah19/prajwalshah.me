@@ -47,5 +47,12 @@ export const project = defineType({
       options: { layout: 'tags' },
       description: 'Tags associated with the project',
     }),
+    defineField({
+      name: 'content',
+      title: 'Project Content',
+      type: 'text',
+      validation: (rule) => rule.required(),
+    }),
+    
   ],
 })
