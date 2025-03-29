@@ -8,6 +8,7 @@ export interface Article {
   excerpt: any;
   date: string;
   link: string;
+  content: string;
 }
 
 export const getArticles = async (): Promise<Article[]> => {
@@ -16,7 +17,8 @@ export const getArticles = async (): Promise<Article[]> => {
       title,
       excerpt,
       date,
-      link
+      link,
+      content
     }`;
   return await client.fetch(query);
 };

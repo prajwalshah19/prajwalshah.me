@@ -4,6 +4,7 @@ import ContentPage from '../components/ContentPage';
 import ArticleCard from '../components/ArticleCard';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Article, getArticles } from '../services/articleData';
+import MarkdownModal from '../components/MarkdownModal';
 
 const More: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -14,6 +15,10 @@ const More: React.FC = () => {
   const indexOfLast = currentPage * articlesPerPage;
   const indexOfFirst = indexOfLast - articlesPerPage;
   const currentArticles = articles.slice(indexOfFirst, indexOfLast);
+
+    // State to control modal display and the markdown content to show
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedMarkdown, setSelectedMarkdown] = useState<string>('');
 
   useEffect(() => {
     getArticles()
@@ -32,6 +37,14 @@ const More: React.FC = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
+    // When a project's "View" is clicked, update the modal content and open it
+    const handleView = (markdown: string) => {
+      setSelectedMarkdown(markdown);
+      setIsModalOpen(true);
+    };
+
+    const closeModal = () => setIsModalOpen(false);
+
   return (
     <ContentPage>
       <div className="w-full lg:w-3/5 mx-auto space-y-8 py-8 px-4">
@@ -40,7 +53,7 @@ const More: React.FC = () => {
         </h1>
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2">
           {currentArticles.map((article, index) => (
-            <ArticleCard key={index} article={article} />
+            <ArticleCard key={index} article={article} onView={handleView}/>
           ))}
         </div>
         {/* Pagination Controls */}
@@ -64,6 +77,11 @@ const More: React.FC = () => {
           </button>
         </div>
       </div>
+      <MarkdownModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        markdown={selectedMarkdown}
+      />
     </ContentPage>
   );
 };
