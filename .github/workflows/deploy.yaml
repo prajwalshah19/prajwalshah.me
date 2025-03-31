@@ -32,9 +32,6 @@ jobs:
           VITE_SANITY_DATASET: ${{ secrets.VITE_SANITY_DATASET }}
         run: yarn build
 
-      - name: Create CNAME file
-        run: echo 'www.prajwalshah.me' > app/dist/CNAME
-
       # Deploy the build folder from the app directory to the GitHub Pages repo
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
