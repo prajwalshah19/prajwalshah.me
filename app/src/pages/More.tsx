@@ -16,9 +16,9 @@ const More: React.FC = () => {
   const indexOfFirst = indexOfLast - articlesPerPage;
   const currentArticles = articles.slice(indexOfFirst, indexOfLast);
 
-    // State to control modal display and the markdown content to show
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedMarkdown, setSelectedMarkdown] = useState<string>('');
+  // State to control modal display and the markdown content to show
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMarkdown, setSelectedMarkdown] = useState<string>('');
 
   useEffect(() => {
     getArticles()
@@ -37,13 +37,13 @@ const More: React.FC = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-    // When a project's "View" is clicked, update the modal content and open it
-    const handleView = (markdown: string) => {
-      setSelectedMarkdown(markdown);
-      setIsModalOpen(true);
-    };
+  // When a project's "View" is clicked, update the modal content and open it
+  const handleView = (markdown: string) => {
+    setSelectedMarkdown(markdown);
+    setIsModalOpen(true);
+  };
 
-    const closeModal = () => setIsModalOpen(false);
+  const closeModal = () => setIsModalOpen(false);
 
   return (
     <ContentPage>
@@ -53,7 +53,7 @@ const More: React.FC = () => {
         </h1>
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2">
           {currentArticles.map((article, index) => (
-            <ArticleCard key={index} article={article} onView={handleView}/>
+            <ArticleCard key={index} article={article} onView={handleView} />
           ))}
         </div>
         {/* Pagination Controls */}

@@ -1,6 +1,5 @@
 // src/pages/AboutMe.tsx
 import React, { useEffect, useState } from 'react';
-//import SocialLinks from './SocialLinks';
 import MiniSocialLinks from './MiniSocialLinks';
 import ExperienceCallout from './ExperienceCallout';
 import { RichText, getAboutText } from '../services/textData';

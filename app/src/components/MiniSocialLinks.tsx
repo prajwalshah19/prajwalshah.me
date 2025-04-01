@@ -31,7 +31,7 @@ const MiniSocialLinks: React.FC = () => {
 
   const links = [
     { label: 'github', url: githubLink?.content },
-    { label: 'linkedin', url: linkedinLink?.content }
+    { label: 'linkedin', url: linkedinLink?.content },
   ];
 
   useEffect(() => {
