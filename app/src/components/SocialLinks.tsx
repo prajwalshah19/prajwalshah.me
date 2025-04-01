@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+
 import {
   PlainText,
   getGithubLink,
@@ -27,10 +28,10 @@ const itemVariants = {
 const SocialLinks: React.FC = () => {
   const [githubLink, setGithubLink] = useState<PlainText | null>(null);
   const [linkedinLink, setLinkedinLink] = useState<PlainText | null>(null);
+
   const links = [
     { label: 'github', url: githubLink?.content },
     { label: 'linkedin', url: linkedinLink?.content },
-    { label: 'resume', url: '#' },
   ];
 
   useEffect(() => {
