@@ -29,7 +29,7 @@ const AboutExperience: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-start h-[98vh]" id="experience">
+    <div className="flex flex-col items-start min-h-screen" id="experience">
       <h2 className="text-5xl lg:text-7xl font-body text-primary dark:text-secondary mt-4 mb-4">
         My Journey
       </h2>
