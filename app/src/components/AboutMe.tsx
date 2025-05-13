@@ -14,7 +14,7 @@ const isMobile = () => typeof window !== 'undefined' && window.innerWidth < 500;
 
 const AboutMe: React.FC<AboutMeProps> = ({ scrollToExperience }) => {
   const [about, setAbout] = useState<RichText | null>(null);
-  const [showCallout, setShowCallout] = useState(true);
+  const [, setShowCallout] = useState(true);
   const aboutRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
