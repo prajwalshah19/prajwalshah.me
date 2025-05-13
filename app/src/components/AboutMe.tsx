@@ -53,7 +53,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ scrollToExperience }) => {
   }, [about]);
 
   return (
-    <div className="relative min-h-screen px-4 flex flex-col">
+    <div className="relative min-h-screen px-4 flex flex-col pb-32 sm:pb-40">
       {/* Top Content */}
       <div className="pt-4 lg:pt-0 flex-1">
         <h2 className="text-5xl lg:text-7xl font-body text-primary dark:text-secondary mb-4">
@@ -70,15 +70,11 @@ const AboutMe: React.FC<AboutMeProps> = ({ scrollToExperience }) => {
           <PortableText value={about?.content} />
         </div>
       </div>
-      {/* Bottom Content */}
-      {showCallout && (
-        <div className="flex flex-col items-center pt-3 pb-8">
-          <MiniSocialLinks />
-          <ExperienceCallout scrollToExperience={scrollToExperience} />
-        </div>
-      )}
-      {/* Add extra space if callout is hidden */}
-      {!showCallout && <div className="h-24" />}
+      {/* Bottom Content: Always show ExperienceCallout, ensure space below */}
+      <div className="flex flex-col items-center pt-3 pb-8">
+        <MiniSocialLinks />
+        <ExperienceCallout scrollToExperience={scrollToExperience} />
+      </div>
     </div>
   );
 };
