@@ -13,7 +13,7 @@
 }
 
 .markdown-body pre {
-  background-color: #f6f8fa;
+  background-color: #f6f8fa !important;
   border-radius: 6px;
   padding: 1em;
   overflow: auto;
@@ -23,8 +23,11 @@
 }
 
 .markdown-body code {
+  background-color: #f6f8fa !important;
   color: var(--color-primary);
 }
+
+
 
 .markdown-body table {
   width: auto;
@@ -65,6 +68,18 @@
 .markdown-body ol {
   margin-left: 2em;
   margin-bottom: 1em;
+}
+
+.markdown-body ul {
+  list-style-type: disc !important;
+}
+
+.markdown-body ol {
+  list-style-type: decimal !important;
+}
+
+.markdown-body li {
+  margin-bottom: 0.5em !important;
 }
 
 /* Images */

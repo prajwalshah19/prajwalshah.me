@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import MiniSocialLinks from './MiniSocialLinks';
 import ExperienceCallout from './ExperienceCallout';
 import { RichText, getAboutText } from '../services/textData';
-import { PortableText } from '@portabletext/react';
+import { PortableText, PortableTextComponents } from '@portabletext/react';
 
 interface AboutMeProps {
   scrollToExperience: () => void;
@@ -11,6 +11,35 @@ interface AboutMeProps {
 
 const MAX_ABOUT_HEIGHT = 500; 
 const isMobile = () => typeof window !== 'undefined' && window.innerWidth < 500;
+
+const portableTextComponents: PortableTextComponents = {
+  block: {
+    // Handle 'normal' blocks (paragraphs)
+    normal: ({ children }) => {
+      if (!children || (Array.isArray(children) && children.length === 0)) {
+        return <p></p>;
+      }
+
+      const renderNodesWithLineBreaks = (nodes: React.ReactNode[] | React.ReactNode) => {
+        const nodesArray = Array.isArray(nodes) ? nodes : [nodes];
+        
+        return nodesArray.flatMap((node, index) => {
+          if (typeof node === 'string' && node.includes('\n')) {
+            return node.split('\n').map((line, lineIndex) => (
+              <React.Fragment key={`line-${index}-${lineIndex}`}>
+                {lineIndex > 0 && <br />}
+                {line}
+              </React.Fragment>
+            ));
+          }
+          return <React.Fragment key={`node-${index}`}>{node}</React.Fragment>; 
+        });
+      };
+
+      return <p>{renderNodesWithLineBreaks(children)}</p>;
+    },
+  },
+};
 
 const AboutMe: React.FC<AboutMeProps> = ({ scrollToExperience }) => {
   const [about, setAbout] = useState<RichText | null>(null);
@@ -67,7 +96,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ scrollToExperience }) => {
             overflowWrap: 'break-word',
           }}
         >
-          <PortableText value={about?.content} />
+          <PortableText value={about?.content} components={portableTextComponents} />
         </div>
       </div>
       {/* Bottom Content: Always show ExperienceCallout, ensure space below */}
