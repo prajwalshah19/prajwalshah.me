@@ -9,34 +9,26 @@ interface AboutMeProps {
   scrollToExperience: () => void;
 }
 
-const MAX_ABOUT_HEIGHT = 500; 
+const MAX_ABOUT_HEIGHT = 500;
 const isMobile = () => typeof window !== 'undefined' && window.innerWidth < 500;
 
+// Custom components for rendering Portable Text
 const portableTextComponents: PortableTextComponents = {
   block: {
-    // Handle 'normal' blocks (paragraphs)
     normal: ({ children }) => {
-      if (!children || (Array.isArray(children) && children.length === 0)) {
-        return <p></p>;
+      // Check if this is an empty paragraph (which Sanity uses for line breaks)
+      const isEmpty =
+        Array.isArray(children) &&
+        children.length === 1 &&
+        typeof children[0] === 'string' &&
+        children[0].trim() === '';
+
+      if (isEmpty) {
+        console.log('Found empty block (used as line break)');
+        // Return a block with height to create spacing
+        return <div className="h-1"></div>;
       }
-
-      const renderNodesWithLineBreaks = (nodes: React.ReactNode[] | React.ReactNode) => {
-        const nodesArray = Array.isArray(nodes) ? nodes : [nodes];
-        
-        return nodesArray.flatMap((node, index) => {
-          if (typeof node === 'string' && node.includes('\n')) {
-            return node.split('\n').map((line, lineIndex) => (
-              <React.Fragment key={`line-${index}-${lineIndex}`}>
-                {lineIndex > 0 && <br />}
-                {line}
-              </React.Fragment>
-            ));
-          }
-          return <React.Fragment key={`node-${index}`}>{node}</React.Fragment>; 
-        });
-      };
-
-      return <p>{renderNodesWithLineBreaks(children)}</p>;
+      return <p className="mb-6">{children}</p>;
     },
   },
 };
@@ -49,6 +41,11 @@ const AboutMe: React.FC<AboutMeProps> = ({ scrollToExperience }) => {
   useEffect(() => {
     getAboutText()
       .then((data) => {
+        console.log(
+          'Raw about data from Sanity:',
+          JSON.stringify(data, null, 2)
+        );
+        console.log('About content structure:', data.content);
         setAbout(data);
       })
       .catch((error) => console.error('Error fetching about:', error));
@@ -90,13 +87,16 @@ const AboutMe: React.FC<AboutMeProps> = ({ scrollToExperience }) => {
         </h2>
         <div
           ref={aboutRef}
-          className="text-lg text-primary dark:text-secondary mb-8"
+          className="text-lg text-primary dark:text-secondary mb-8 portable-text-container"
           style={{
             fontSize: 'calc(1rem + (0.5rem * ((100vh - 400px) / 400)))',
             overflowWrap: 'break-word',
           }}
         >
-          <PortableText value={about?.content} components={portableTextComponents} />
+          <PortableText
+            value={about?.content}
+            components={portableTextComponents}
+          />
         </div>
       </div>
       {/* Bottom Content: Always show ExperienceCallout, ensure space below */}
