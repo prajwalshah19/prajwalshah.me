@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
 const ThemeToggle: React.FC = () => {
-  // Initialize theme state based on <html> class
-  const initialTheme = document.documentElement.classList.contains('dark')
-    ? 'dark'
-    : 'light';
-  const [currentTheme, setCurrentTheme] = useState<string>(initialTheme);
+  const [currentTheme, setCurrentTheme] = useState<string>('dark');
 
   useEffect(() => {
-    console.log('Current theme:', currentTheme);
-  }, [currentTheme]);
+    // Read initial theme from DOM on mount
+    const theme = document.documentElement.classList.contains('dark')
+      ? 'dark'
+      : 'light';
+    setCurrentTheme(theme);
+  }, []);
 
   const toggleTheme = () => {
     if (document.documentElement.classList.contains('dark')) {
@@ -20,7 +20,6 @@ const ThemeToggle: React.FC = () => {
       setCurrentTheme('light');
     } else if (document.documentElement.classList.contains('light')) {
       document.documentElement.classList.replace('light', 'dark');
-      //document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
       setCurrentTheme('dark');
     }

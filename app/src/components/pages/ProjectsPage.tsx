@@ -1,18 +1,15 @@
-// src/pages/Projects.tsx
 import React, { useState, useEffect } from 'react';
-import ContentPage from '../components/ContentPage';
-import ProjectCard from '../components/ProjectCard';
-import MarkdownModal from '../components/MarkdownModal';
+import ProjectCard from '../ProjectCard';
+import MarkdownModal from '../MarkdownModal';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { getProjects, Project } from '../services/projectData';
+import { getProjects, Project } from '../../services/projectData';
 
-const Projects: React.FC = () => {
+const ProjectsPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 4;
   const totalPages = Math.ceil(projects.length / projectsPerPage);
 
-  // State to control modal display and the markdown content to show
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMarkdown, setSelectedMarkdown] = useState<string>('');
 
@@ -36,7 +33,6 @@ const Projects: React.FC = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  // When a project's "View" is clicked, update the modal content and open it
   const handleView = (markdown: string) => {
     setSelectedMarkdown(markdown);
     setIsModalOpen(true);
@@ -45,7 +41,7 @@ const Projects: React.FC = () => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <ContentPage>
+    <>
       <div className="w-9/10 lg:w-3/5 mx-auto space-y-8 lg:p-0 p-2 lg:mb-[10vh]">
         <h1 className="text-6xl font-body text-primary dark:text-secondary text-center mt-4 mb-4 lg:mb-8">
           My Work
@@ -80,8 +76,8 @@ const Projects: React.FC = () => {
         onClose={closeModal}
         markdown={selectedMarkdown}
       />
-    </ContentPage>
+    </>
   );
 };
 
-export default Projects;
+export default ProjectsPage;

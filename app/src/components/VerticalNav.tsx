@@ -2,7 +2,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
 
 export interface NavLink {
   label: string;
@@ -15,8 +14,7 @@ export interface VerticalNavProps {
 }
 
 const VerticalNav: React.FC<VerticalNavProps> = ({ header, links }) => {
-  const location = useLocation();
-  const MotionLink = motion(Link);
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/';
 
   return (
     <div className="flex flex-col items-start space-y-4">
@@ -25,11 +23,11 @@ const VerticalNav: React.FC<VerticalNavProps> = ({ header, links }) => {
       </h2>
       <div className="flex flex-col space-y-4">
         {links.map((link, index) => {
-          const isActive = location.pathname === link.url;
+          const isActive = currentPath === link.url;
           return (
-            <MotionLink
+            <motion.a
               key={index}
-              to={link.url}
+              href={link.url}
               className={`flex items-center space-x-1 no-underline lg:text-4xl text-2xl${
                 isActive ? 'font-bold' : ''
               } text-primary dark:text-secondary`}
@@ -38,7 +36,7 @@ const VerticalNav: React.FC<VerticalNavProps> = ({ header, links }) => {
             >
               <span>{link.label}</span>
               <ArrowUpRight className="w-5 h-5" />
-            </MotionLink>
+            </motion.a>
           );
         })}
       </div>

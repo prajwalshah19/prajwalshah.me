@@ -1,6 +1,5 @@
 // src/components/Footer.tsx
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const menuItems = [
   { label: 'Home', url: '/' },
@@ -19,12 +18,12 @@ const Footer: React.FC = () => {
           <ul className="flex flex-row items-center justify-center space-x-4">
             {menuItems.map((item, index) => (
               <li key={index}>
-                <Link
-                  to={item.url}
+                <a
+                  href={item.url}
                   className="text-primary dark:text-secondary hover:underline text-base"
                 >
                   {item.label}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

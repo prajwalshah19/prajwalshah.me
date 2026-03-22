@@ -1,0 +1,15 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ContentPage from '../components/ContentPage.tsx';
+
+interface Props {
+  title?: string;
+}
+const { title = 'Prajwal Shah' } = Astro.props;
+---
+
+<BaseLayout title={title}>
+  <ContentPage client:load>
+    <slot />
+  </ContentPage>
+</BaseLayout>

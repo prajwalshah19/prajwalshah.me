@@ -4,18 +4,20 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,html}\""
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,scss,html,astro}\""
   },
   "dependencies": {
+    "@astrojs/react": "^5.0.1",
     "@portabletext/react": "^3.2.1",
     "@sanity/client": "^6.28.3",
     "@tailwindcss/postcss": "^4.0.9",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.9",
+    "astro": "^6.0.7",
     "framer-motion": "^12.4.7",
     "github-markdown-css": "^5.8.1",
     "lucide-react": "^0.477.0",
@@ -23,7 +25,6 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
-    "react-router-dom": "^7.2.0",
     "remark-gfm": "^4.0.1",
     "tailwindcss": "^4.0.9"
   },
@@ -32,7 +33,6 @@
     "@types/dompurify": "^3.2.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react-swc": "^3.8.0",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",

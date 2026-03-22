@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
 import Footer from './Footer';
 
@@ -66,13 +65,13 @@ const ContentPage: React.FC<ContentPageProps> = ({ children }) => {
                     key={index}
                     className="text-3xl text-primary dark:text-secondary font-body"
                   >
-                    <Link
-                      to={item.url}
+                    <a
+                      href={item.url}
                       onClick={toggleMenu}
                       className="no-underline"
                     >
                       {item.label}
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>
