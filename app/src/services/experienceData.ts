@@ -1,13 +1,13 @@
 import { client } from './sanity';
+import { PortableTextContent } from '../types/portableText';
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Experience {
   _id: string;
   dateRange: string;
   date: string;
   company: string;
   position: string;
-  description: any;
+  description: PortableTextContent;
   location?: string;
 }
 
