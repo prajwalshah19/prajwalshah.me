@@ -13,7 +13,6 @@ const AboutExperience: React.FC = () => {
   useEffect(() => {
     getExperiences()
       .then((data: Experience[]) => {
-        //console.log("Fetched experiences:", data);
         setTimelineData(data);
       })
       .catch((error) => console.error('Error fetching experiences:', error));
@@ -22,7 +21,6 @@ const AboutExperience: React.FC = () => {
   useEffect(() => {
     getExperienceText()
       .then((data: RichText) => {
-        //console.log("Fetched experience text:", data);
         setExperienceText(data);
       })
       .catch((error) => console.error('Error fetching experiences:', error));
@@ -34,7 +32,7 @@ const AboutExperience: React.FC = () => {
         My Journey
       </h2>
       <div className="text-lg text-primary dark:text-secondary mb-8">
-        <PortableText value={experienceText?.content} />
+        {experienceText?.content && <PortableText value={experienceText.content} />}
       </div>
       <Timeline entries={timelineData} />
     </div>

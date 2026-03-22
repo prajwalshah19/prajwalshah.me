@@ -1,5 +1,5 @@
 // src/components/ThemeToggle.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
 const ThemeToggle: React.FC = () => {
@@ -9,9 +9,6 @@ const ThemeToggle: React.FC = () => {
     : 'light';
   const [currentTheme, setCurrentTheme] = useState<string>(initialTheme);
 
-  useEffect(() => {
-    console.log('Current theme:', currentTheme);
-  }, [currentTheme]);
 
   const toggleTheme = () => {
     if (document.documentElement.classList.contains('dark')) {

@@ -37,7 +37,6 @@ const SocialLinks: React.FC = () => {
   useEffect(() => {
     getGithubLink()
       .then((data: PlainText) => {
-        //console.log("Fetched experiences:", data);
         setGithubLink(data);
       })
       .catch((error) => console.error('Error fetching github link', error));
@@ -46,7 +45,6 @@ const SocialLinks: React.FC = () => {
   useEffect(() => {
     getLinkedinLink()
       .then((data: PlainText) => {
-        //console.log("Fetched experiences:", data);
         setLinkedinLink(data);
       })
       .catch((error) => console.error('Error fetching linkedin link', error));
@@ -62,6 +60,7 @@ const SocialLinks: React.FC = () => {
       {links.map((link, index) => (
         <motion.a
           target="_blank"
+          rel="noopener noreferrer"
           key={index}
           href={link.url}
           variants={itemVariants}

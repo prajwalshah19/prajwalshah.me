@@ -24,8 +24,6 @@ const portableTextComponents: PortableTextComponents = {
         children[0].trim() === '';
 
       if (isEmpty) {
-        console.log('Found empty block (used as line break)');
-        // Return a block with height to create spacing
         return <div className="h-1"></div>;
       }
       return <p className="mb-6">{children}</p>;
@@ -41,11 +39,6 @@ const AboutMe: React.FC<AboutMeProps> = ({ scrollToExperience }) => {
   useEffect(() => {
     getAboutText()
       .then((data) => {
-        console.log(
-          'Raw about data from Sanity:',
-          JSON.stringify(data, null, 2)
-        );
-        console.log('About content structure:', data.content);
         setAbout(data);
       })
       .catch((error) => console.error('Error fetching about:', error));
@@ -93,10 +86,12 @@ const AboutMe: React.FC<AboutMeProps> = ({ scrollToExperience }) => {
             overflowWrap: 'break-word',
           }}
         >
-          <PortableText
-            value={about?.content}
-            components={portableTextComponents}
-          />
+          {about?.content && (
+            <PortableText
+              value={about.content}
+              components={portableTextComponents}
+            />
+          )}
         </div>
       </div>
       {/* Bottom Content: Always show ExperienceCallout, ensure space below */}

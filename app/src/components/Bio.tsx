@@ -9,7 +9,6 @@ const Bio: React.FC = () => {
   useEffect(() => {
     getBioText()
       .then((data) => {
-        //console.log('Fetched bio:', data);
         setBio(data);
       })
       .catch((error) => console.error('Error fetching bio:', error));
@@ -25,7 +24,7 @@ const Bio: React.FC = () => {
           Bio
         </h2>
         <div className=" text-primary dark:text-secondary lg:text-lg text-base">
-          <PortableText value={bio?.content} />
+          {bio?.content && <PortableText value={bio.content} />}
         </div>
         <div className="flex flex-row w-full mt-8 gap-y-4 gap-x-4">
           <div className="w-full lg:w-1/2 h-auto lg:h-[50%]">
