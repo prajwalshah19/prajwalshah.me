@@ -14,7 +14,7 @@ const Timeline: React.FC<TimelineProps> = ({ entries }) => {
         <div key={entry._id} className="flex mb-8">
           <div className="flex flex-col items-center mr-4">
             <div className="w-4 h-4 rounded-full bg-primary dark:bg-secondary"></div>
-            {index !== entries.length && (
+            {index !== entries.length - 1 && (
               <div className="flex-1 w-px bg-primary dark:bg-secondary"></div>
             )}
           </div>
