@@ -6,7 +6,7 @@ const GotoNav: React.FC = () => {
   const gotoLinks: NavLink[] = [
     { label: 'About', url: '/about' },
     { label: 'Projects', url: '/projects' },
-    { label: 'More', url: '/more' },
+    { label: 'Thoughts', url: '/thoughts' },
     { label: 'Contact', url: '/contact' },
   ];
 

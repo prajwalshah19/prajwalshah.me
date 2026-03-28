@@ -9,7 +9,7 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ scrollToBio }) => {
   return (
-    <section className="w-full h-screen flex lg:items-center justify-center">
+    <section className="w-full min-h-screen flex lg:items-center justify-center relative">
       <div
         className="
           flex flex-col items-center justify-start pt-[20vh] lg:pt-[13vh] px-2
@@ -22,7 +22,7 @@ const Hero: React.FC<HeroProps> = ({ scrollToBio }) => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className=" text-left lg:text-center text-8xl lg:text-[13rem] font-body text-primary dark:text-secondary"
+            className="text-left lg:text-center text-6xl sm:text-8xl lg:text-[13rem] font-body text-primary dark:text-secondary"
           >
             Hi, <br className="block sm:hidden" /> I'm Praj
           </motion.h1>

@@ -1,14 +1,15 @@
 // src/components/ProjectCard.tsx
-import { ArrowUpRight } from 'lucide-react';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
 import { Project } from '../services/projectData';
 import { PortableText } from '@portabletext/react';
 
 interface ProjectCardProps {
   project: Project;
-  onView: (markdown: string) => void;
 }
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, onView }) => {
+
+const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return (
     <div className="border border-primary dark:border-secondary p-6 shadow-md hover:shadow-xl transition-shadow duration-300 bg-secondary dark:bg-primary">
       <h3 className="text-2xl font-body text-primary dark:text-secondary mb-2">
@@ -30,14 +31,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onView }) => {
           </span>
         ))}
       </div>
-      {/* Replace the anchor link with a button that calls onView */}
-      <button
-        onClick={() => onView(project.content)}
+      <Link
+        to={`/projects/${project.slug?.current}`}
         className="inline-flex items-center text-primary dark:text-secondary hover:underline"
       >
         <span>View</span>
         <ArrowUpRight className="w-4 h-4 ml-1" />
-      </button>
+      </Link>
     </div>
   );
 };

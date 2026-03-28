@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import ContentPage from '../components/ContentPage';
 import ProjectCard from '../components/ProjectCard';
-import MarkdownModal from '../components/MarkdownModal';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { getProjects, Project } from '../services/projectData';
 
@@ -11,10 +10,6 @@ const Projects: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const projectsPerPage = 4;
   const totalPages = Math.ceil(projects.length / projectsPerPage);
-
-  // State to control modal display and the markdown content to show
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedMarkdown, setSelectedMarkdown] = useState<string>('');
 
   useEffect(() => {
     getProjects()
@@ -36,14 +31,6 @@ const Projects: React.FC = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  // When a project's "View" is clicked, update the modal content and open it
-  const handleView = (markdown: string) => {
-    setSelectedMarkdown(markdown);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => setIsModalOpen(false);
-
   return (
     <ContentPage>
       <div className="w-9/10 lg:w-3/5 mx-auto space-y-8 lg:p-0 p-2 lg:mb-[10vh]">
@@ -51,8 +38,8 @@ const Projects: React.FC = () => {
           My Work
         </h1>
         <div className="grid lg:gap-x-8 gap-y-4 grid-cols-1 sm:grid-cols-2">
-          {currentProjects.map((project, index) => (
-            <ProjectCard key={index} project={project} onView={handleView} />
+          {currentProjects.map((project) => (
+            <ProjectCard key={project._id} project={project} />
           ))}
         </div>
         <div className="flex justify-center items-center space-x-4 mt-8">
@@ -75,11 +62,6 @@ const Projects: React.FC = () => {
           </button>
         </div>
       </div>
-      <MarkdownModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        markdown={selectedMarkdown}
-      />
     </ContentPage>
   );
 };

@@ -8,8 +8,10 @@ import ScrollToTop from './components/ScrollToTop';
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Projects = lazy(() => import('./pages/Projects'));
-const More = lazy(() => import('./pages/More'));
+const Thoughts = lazy(() => import('./pages/Thoughts'));
 const Contact = lazy(() => import('./pages/Contact'));
+const ArticleDetail = lazy(() => import('./pages/ArticleDetail'));
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 
 function App() {
   return (
@@ -20,8 +22,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/more" element={<More />} />
+          <Route path="/thoughts" element={<Thoughts />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/articles/:slug" element={<ArticleDetail />} />
+          <Route path="/projects/:slug" element={<ProjectDetail />} />
         </Routes>
       </Suspense>
     </HashRouter>

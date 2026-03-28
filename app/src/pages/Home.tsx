@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="bg:secondary dark:bg-primary mx-auto w-screen h-screen">
+    <div className="bg-secondary dark:bg-primary mx-auto w-full min-h-screen">
       <ThemeToggle />
       <Hero scrollToBio={scrollToBio} />
       <Bio />

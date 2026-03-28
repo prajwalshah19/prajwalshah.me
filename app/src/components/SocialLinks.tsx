@@ -55,7 +55,7 @@ const SocialLinks: React.FC = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="hidden lg:flex lg:flex-row items-center justify-evenly h-[30vh] w-full text-4xl lg:text-5xl text-primary dark:text-secondary font-body pt-8 pb-8 mt-12 lg:mt-0"
+      className="flex flex-row items-center justify-evenly h-auto lg:h-[30vh] w-full text-2xl lg:text-5xl text-primary dark:text-secondary font-body pt-8 pb-8 mt-4 lg:mt-0"
     >
       {links.map((link, index) => (
         <motion.a
@@ -66,10 +66,10 @@ const SocialLinks: React.FC = () => {
           variants={itemVariants}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center mb-12 p-0 no-underline"
+          className="flex items-center mb-4 lg:mb-12 p-0 no-underline"
         >
           <span>{link.label}</span>
-          <ArrowUpRight className="w-10 h-10" />
+          <ArrowUpRight className="w-6 h-6 lg:w-10 lg:h-10" />
         </motion.a>
       ))}
     </motion.div>
