@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import ContentPage from '../components/ContentPage';
 import MarkdownRenderer from '../components/MarkdownRenderer';
@@ -8,6 +8,7 @@ import { Project, getProjectBySlug } from '../services/projectData';
 
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -19,6 +20,9 @@ const ProjectDetail: React.FC = () => {
       .finally(() => setLoading(false));
   }, [slug]);
 
+  const goBack = () =>
+    navigate('/', { state: { scrollTo: 'work', workTab: 'projects' } });
+
   if (loading) return <LoadingScreen />;
 
   if (!project) {
@@ -28,13 +32,14 @@ const ProjectDetail: React.FC = () => {
           <h1 className="text-4xl font-body text-primary dark:text-secondary mb-4">
             Project not found
           </h1>
-          <Link
-            to="/projects"
-            className="inline-flex items-center text-primary dark:text-secondary hover:underline"
+          <button
+            type="button"
+            onClick={goBack}
+            className="inline-flex items-center text-primary dark:text-secondary hover:underline bg-transparent border-none cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to projects
-          </Link>
+            Back to work
+          </button>
         </div>
       </ContentPage>
     );
@@ -43,13 +48,14 @@ const ProjectDetail: React.FC = () => {
   return (
     <ContentPage>
       <div className="w-full lg:w-3/5 mx-auto py-8 px-4">
-        <Link
-          to="/projects"
-          className="inline-flex items-center text-primary dark:text-secondary hover:underline mb-6"
+        <button
+          type="button"
+          onClick={goBack}
+          className="inline-flex items-center text-primary dark:text-secondary hover:underline mb-6 bg-transparent border-none cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
-          Back to projects
-        </Link>
+          Back to work
+        </button>
         <h1 className="text-5xl font-body text-primary dark:text-secondary mt-4 mb-2">
           {project.name}
         </h1>

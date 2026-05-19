@@ -1,24 +1,38 @@
-// src/pages/Home.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Hero from '../components/Hero';
-import Bio from '../components/Bio';
-import ThemeToggle from '../components/ThemeToggle';
+import AboutSection from '../components/AboutSection';
+import ExperienceSection from '../components/ExperienceSection';
+import WorkSection from '../components/WorkSection';
+import ContactSection from '../components/ContactSection';
+import ContentPage from '../components/ContentPage';
 
 const Home: React.FC = () => {
-  // Scroll smoothly to the 'about' section when the arrow is clicked
-  const scrollToBio = () => {
-    const aboutSection = document.getElementById('bio');
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: 'smooth' });
-    }
+  const location = useLocation();
+
+  const scrollToId = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Handle anchor navigation from other routes (e.g. /articles/:slug → /#projects)
+  useEffect(() => {
+    const target = (location.state as { scrollTo?: string } | null)?.scrollTo;
+    if (target) {
+      // Wait a tick for sections to mount
+      setTimeout(() => scrollToId(target), 0);
+    }
+  }, [location.state]);
+
   return (
-    <div className="bg-secondary dark:bg-primary mx-auto w-full min-h-screen">
-      <ThemeToggle />
-      <Hero scrollToBio={scrollToBio} />
-      <Bio />
-    </div>
+    <ContentPage fullBleed>
+      <Hero scrollToNext={() => scrollToId('about')} />
+
+      <AboutSection />
+      <ExperienceSection />
+      <WorkSection />
+      <ContactSection />
+    </ContentPage>
   );
 };
 

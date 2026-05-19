@@ -9,7 +9,7 @@ interface TimelineProps {
 
 const Timeline: React.FC<TimelineProps> = ({ entries }) => {
   return (
-    <div className="w-full lg:w-3/5 mx-auto flex flex-col items-start">
+    <div className="w-full flex flex-col items-start">
       {entries.map((entry, index) => (
         <div key={entry._id} className="flex mb-8">
           <div className="flex flex-col items-center mr-4">

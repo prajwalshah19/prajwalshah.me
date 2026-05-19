@@ -1,49 +1,43 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
-import SocialLinks from './SocialLinks';
 
 interface HeroProps {
-  scrollToBio: () => void;
+  scrollToNext: () => void;
 }
 
-const Hero: React.FC<HeroProps> = ({ scrollToBio }) => {
+const Hero: React.FC<HeroProps> = ({ scrollToNext }) => {
   return (
-    <section className="w-full min-h-screen flex lg:items-center justify-center relative">
-      <div
-        className="
-          flex flex-col items-center justify-start pt-[20vh] lg:pt-[13vh] px-2
-          lg:w-[80vw] lg:h-[75vh] lg:border-4 lg:border-primary lg:dark:border-secondary
-          mx-auto
-        "
-      >
-        <div className="w-full flex flex-col ">
-          <motion.h1
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="text-left lg:text-center text-6xl sm:text-8xl lg:text-[13rem] font-body text-primary dark:text-secondary"
-          >
-            Hi, <br className="block sm:hidden" /> I'm Praj
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="mt-4 text-xl lg:text-center lg:text-2xl font-headline text-primary dark:text-secondary lg:pt-5"
-          >
-            Computer Science and Economics @ Purdue
-          </motion.p>
+    <section
+      id="top"
+      className="relative w-full min-h-screen flex items-center justify-center px-6 sm:px-8"
+    >
+      <div className="w-full max-w-2xl mx-auto text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-4xl sm:text-5xl lg:text-6xl font-body text-primary dark:text-secondary leading-[1.05]"
+        >
+          Hi, I'm Praj
+        </motion.h1>
 
-          <SocialLinks />
-        </div>
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="mt-4 text-sm lg:text-base font-body text-primary dark:text-secondary"
+        >
+          Computer Science and Economics @ Purdue
+        </motion.p>
       </div>
+
       <button
-        onClick={scrollToBio}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 focus:outline-none"
-        aria-label="Scroll down to bio"
+        onClick={scrollToNext}
+        aria-label="Scroll down"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 p-2 text-primary dark:text-secondary opacity-60 hover:opacity-100 transition-opacity duration-200 focus:outline-none"
       >
-        <ChevronDown className="w-15 h-15 text-primary dark:text-secondary animate-bounce" />
+        <ChevronDown className="w-5 h-5" />
       </button>
     </section>
   );
