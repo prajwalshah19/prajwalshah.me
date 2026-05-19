@@ -13,6 +13,11 @@ dist-ssr
 *.local
 *.env
 
+# Yarn (Berry) artifacts
+.yarn/
+.yarnrc.yml
+.pnp.*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
