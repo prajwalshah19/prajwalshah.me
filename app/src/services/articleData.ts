@@ -9,28 +9,19 @@ export interface Article {
   date: string;
   link: string;
   content: string;
-  preview?: boolean;
+  comingSoon?: boolean;
 }
 
 export type ArticleSummary = Pick<
   Article,
-  '_id' | 'title' | 'slug' | 'excerpt' | 'date' | 'preview'
+  '_id' | 'title' | 'slug' | 'excerpt' | 'date' | 'comingSoon'
 >;
-
-// Explicit local preview; never serves sample writing in production.
-const previewEnabled =
-  import.meta.env.DEV &&
-  new URLSearchParams(window.location.search).get('writingPreview') === '1';
 
 export const getArticleSummaries = async (): Promise<ArticleSummary[]> => {
   const query = `*[_type == "article" && defined(slug.current)] | order(date desc, _id asc) {
-    _id, title, slug, excerpt, date
+    _id, title, slug, excerpt, date, comingSoon
   }`;
   const articles = await client.fetch<ArticleSummary[]>(query);
-  if (previewEnabled && articles.length === 0) {
-    const { writingSamples } = await import('../dev/writingSamples');
-    return writingSamples;
-  }
   return articles;
 };
 
@@ -42,6 +33,7 @@ export const getArticles = async (): Promise<Article[]> => {
       excerpt,
       date,
       link,
+      comingSoon,
       content
     }`;
   return await client.fetch(query);
@@ -57,14 +49,9 @@ export const getArticleBySlug = async (
       excerpt,
       date,
       link,
+      comingSoon,
       content
     }`;
   const article = await client.fetch<Article | null>(query, { slug });
-  if (!article && previewEnabled) {
-    const { writingSamples } = await import('../dev/writingSamples');
-    return (
-      writingSamples.find((sample) => sample.slug.current === slug) ?? null
-    );
-  }
   return article;
 };

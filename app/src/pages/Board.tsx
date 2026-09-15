@@ -27,9 +27,6 @@ const Board: React.FC = () => {
           <h1 className="text-3xl lg:text-4xl font-body text-primary dark:text-secondary">
             Board
           </h1>
-          <p className="mt-2 text-xs text-primary dark:text-secondary opacity-70">
-            A wandering collection of things I like.
-          </p>
         </header>
 
         {items.length === 0 ? (

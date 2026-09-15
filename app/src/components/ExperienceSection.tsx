@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { PortableText } from '@portabletext/react';
-import { RichText, getExperienceText } from '../services/textData';
 import { Experience, getExperiences } from '../services/experienceData';
 
 function yearOf(iso: string): string {
@@ -13,12 +12,10 @@ function yearOf(iso: string): string {
 }
 
 const ExperienceSection: React.FC = () => {
-  const [intro, setIntro] = useState<RichText | null>(null);
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
-    getExperienceText().then(setIntro).catch(console.error);
     getExperiences().then(setExperiences).catch(console.error);
   }, []);
 
@@ -31,15 +28,9 @@ const ExperienceSection: React.FC = () => {
       className="w-full min-h-screen flex items-start bg-secondary dark:bg-primary py-16"
     >
       <div className="w-full max-w-xl mx-auto px-6 text-center">
-        <h2 className="text-2xl lg:text-3xl font-body text-primary dark:text-secondary mb-2">
+        <h2 className="text-2xl lg:text-3xl font-body text-primary dark:text-secondary mb-6">
           Experience
         </h2>
-
-        {intro?.content && (
-          <div className="text-[11px] text-primary dark:text-secondary opacity-80 mb-5">
-            <PortableText value={intro.content} />
-          </div>
-        )}
 
         <ul className="text-left divide-y divide-primary/30 dark:divide-secondary/30 border-t border-b border-primary/30 dark:border-secondary/30 max-h-[60vh] overflow-y-auto">
           {experiences.map((exp) => {

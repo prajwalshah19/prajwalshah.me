@@ -55,15 +55,15 @@ const WritingList = () => {
   }
 
   return (
-    <>
-      {articles.some((article) => article.preview) && (
-        <p className="mb-3 text-center text-[10px] tracking-wide text-primary dark:text-secondary opacity-60">
-          Local layout preview · sample articles
-        </p>
-      )}
-      <ul className="text-left divide-y divide-primary/30 dark:divide-secondary/30 border-y border-primary/30 dark:border-secondary/30">
-        {articles.map((article) => (
-          <li key={article._id}>
+    <ul className="text-left divide-y divide-primary/30 dark:divide-secondary/30 border-y border-primary/30 dark:border-secondary/30">
+      {articles.map((article) => (
+        <li key={article._id}>
+          {article.comingSoon ? (
+            <div className="py-5 text-primary dark:text-secondary">
+              <h3 className="text-sm font-body">{article.title}</h3>
+              <p className="mt-2 text-xs opacity-60">Coming soon</p>
+            </div>
+          ) : (
             <Link
               to={`/articles/${article.slug.current}`}
               className="group flex items-start gap-4 py-5 text-primary dark:text-secondary"
@@ -93,10 +93,10 @@ const WritingList = () => {
                 className="w-3.5 h-3.5 shrink-0 mt-0.5 opacity-60 group-hover:opacity-100"
               />
             </Link>
-          </li>
-        ))}
-      </ul>
-    </>
+          )}
+        </li>
+      ))}
+    </ul>
   );
 };
 

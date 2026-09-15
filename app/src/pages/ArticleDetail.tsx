@@ -52,18 +52,21 @@ const ArticleDetail: React.FC = () => {
           <ArrowLeft className="w-4 h-4 mr-1" />
           Back to writing
         </Link>
-        {article.preview && (
-          <p className="mt-6 text-xs text-primary dark:text-secondary opacity-60">
-            Local layout preview · sample article
-          </p>
-        )}
         <h1 className="text-5xl font-body text-primary dark:text-secondary mt-4 mb-2">
           {article.title}
         </h1>
-        <p className="text-sm text-primary dark:text-secondary mb-8">
-          {article.date}
-        </p>
-        <MarkdownRenderer markdown={article.content} />
+        {article.comingSoon ? (
+          <p className="text-sm text-primary dark:text-secondary opacity-60 mt-4">
+            Coming soon
+          </p>
+        ) : (
+          <>
+            <p className="text-sm text-primary dark:text-secondary mb-8">
+              {article.date}
+            </p>
+            <MarkdownRenderer markdown={article.content} />
+          </>
+        )}
       </div>
     </ContentPage>
   );
