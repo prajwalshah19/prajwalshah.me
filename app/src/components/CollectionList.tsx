@@ -49,22 +49,37 @@ function CollectionList<T>({
       rows.forEach((row) => {
         row.hidden = false;
       });
+      footer.hidden = false;
 
       const listRect = list.getBoundingClientRect();
       const footerStyle = getComputedStyle(footer);
+      const footerSpace =
+        footer.getBoundingClientRect().height +
+        parseFloat(footerStyle.marginTop) +
+        parseFloat(footerStyle.marginBottom);
       const available =
         (window.visualViewport?.height ?? window.innerHeight) -
         (listRect.top - section.getBoundingClientRect().top) -
-        parseFloat(getComputedStyle(section).paddingBottom) -
-        footer.getBoundingClientRect().height -
-        parseFloat(footerStyle.marginTop) -
-        parseFloat(footerStyle.marginBottom);
+        parseFloat(getComputedStyle(section).paddingBottom);
       const border = parseFloat(getComputedStyle(list).borderBottomWidth);
+
+      // If every row fits without reserving footer space, the See all link
+      // adds nothing — show the full list instead.
+      const lastRow = rows[rows.length - 1];
+      if (
+        !lastRow ||
+        lastRow.getBoundingClientRect().bottom - listRect.top + border <=
+          available
+      ) {
+        footer.hidden = true;
+        return;
+      }
+
       let count = 0;
       for (const row of rows) {
         if (
           row.getBoundingClientRect().bottom - listRect.top + border >
-          available
+          available - footerSpace
         )
           break;
         count++;
@@ -73,6 +88,7 @@ function CollectionList<T>({
       rows.forEach((row, index) => {
         row.hidden = index >= Math.max(1, count);
       });
+      footer.hidden = !rows.some((row) => row.hidden);
     };
 
     const schedule = () => {
@@ -98,6 +114,7 @@ function CollectionList<T>({
       rows.forEach((row) => {
         row.hidden = false;
       });
+      footer.hidden = true;
     };
   }, [preview, items]);
 
@@ -139,8 +156,8 @@ function CollectionList<T>({
           {items.map(renderItem)}
         </ul>
       )}
-      {preview && (
-        <div ref={footerRef} className="mt-6 text-center">
+      {preview && status === 'ready' && items.length > 0 && (
+        <div ref={footerRef} hidden className="mt-6 text-center">
           <Link
             to={allHref}
             className="inline-flex items-center gap-1 text-[11px] tracking-widest uppercase text-primary dark:text-secondary opacity-70 hover:opacity-100 transition-opacity duration-200"
