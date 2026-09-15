@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PortableText, PortableTextComponents } from '@portabletext/react';
 import { RichText, getAboutText } from '../services/textData';
 
@@ -39,6 +40,14 @@ const AboutSection: React.FC = () => {
               components={portableTextComponents}
             />
           )}
+        </div>
+        <div className="mt-6">
+          <Link
+            to="/board"
+            className="inline-flex items-center text-[11px] tracking-widest uppercase text-primary dark:text-secondary opacity-60 hover:opacity-100 transition-opacity duration-200"
+          >
+            board →
+          </Link>
         </div>
       </div>
     </section>

@@ -17,11 +17,11 @@ const Board: React.FC = () => {
       <div className="w-full max-w-6xl mx-auto px-6 py-12">
         <Link
           to="/"
-          state={{ scrollTo: 'board' }}
+          state={{ scrollTo: 'about' }}
           className="inline-flex items-center text-xs text-primary dark:text-secondary hover:underline mb-6"
         >
           <ArrowLeft className="w-3.5 h-3.5 mr-1" />
-          Back to home
+          Back to about
         </Link>
         <header className="mb-10 text-center">
           <h1 className="text-3xl lg:text-4xl font-body text-primary dark:text-secondary">

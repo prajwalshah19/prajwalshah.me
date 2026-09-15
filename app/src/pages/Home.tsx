@@ -4,7 +4,6 @@ import Hero from '../components/Hero';
 import AboutSection from '../components/AboutSection';
 import ExperienceSection from '../components/ExperienceSection';
 import ProjectsSection from '../components/ProjectsSection';
-import BoardSection from '../components/BoardSection';
 import ContactSection from '../components/ContactSection';
 import ContentPage from '../components/ContentPage';
 
@@ -32,7 +31,6 @@ const Home: React.FC = () => {
       <AboutSection />
       <ExperienceSection />
       <ProjectsSection />
-      <BoardSection />
       <ContactSection />
     </ContentPage>
   );
