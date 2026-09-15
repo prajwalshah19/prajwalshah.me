@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import ContentPage from '../components/ContentPage';
 import MarkdownRenderer from '../components/MarkdownRenderer';
@@ -8,6 +8,13 @@ import { Article, getArticleBySlug } from '../services/articleData';
 
 const ArticleDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
+  const fromWriting =
+    (location.state as { returnTo?: string } | null)?.returnTo === '/writing';
+  const backTo = fromWriting ? '/writing' : '/';
+  const backState = fromWriting
+    ? undefined
+    : { scrollTo: 'work', workTab: 'writing' };
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -29,8 +36,8 @@ const ArticleDetail: React.FC = () => {
             Article not found
           </h1>
           <Link
-            to="/"
-            state={{ scrollTo: 'work', workTab: 'writing' }}
+            to={backTo}
+            state={backState}
             className="inline-flex items-center text-primary dark:text-secondary hover:underline"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
@@ -45,8 +52,8 @@ const ArticleDetail: React.FC = () => {
     <ContentPage>
       <div className="w-full lg:w-3/5 mx-auto py-8 px-4">
         <Link
-          to="/"
-          state={{ scrollTo: 'work', workTab: 'writing' }}
+          to={backTo}
+          state={backState}
           className="inline-flex items-center text-primary dark:text-secondary hover:underline"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />

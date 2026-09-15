@@ -20,13 +20,17 @@ body {
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
 }
 
-main > section,
-main > div > section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+/* Let mobile pages scroll naturally, even when a section exceeds the viewport. */
+@media (min-width: 640px) {
+  html:has(main[data-section-snap]) {
+    scroll-snap-type: y proximity;
+  }
+
+  main[data-section-snap] > section {
+    scroll-snap-align: start;
+  }
 }
 
 /* Hide scrollbars for Chrome, Safari and Opera */

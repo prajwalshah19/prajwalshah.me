@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import ContentPage from '../components/ContentPage';
 import MarkdownRenderer from '../components/MarkdownRenderer';
@@ -9,6 +9,9 @@ import { Project, getProjectBySlug } from '../services/projectData';
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromProjects =
+    (location.state as { returnTo?: string } | null)?.returnTo === '/projects';
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,8 +23,10 @@ const ProjectDetail: React.FC = () => {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  const goBack = () =>
-    navigate('/', { state: { scrollTo: 'work', workTab: 'projects' } });
+  const goBack = () => {
+    if (fromProjects) navigate('/projects');
+    else navigate('/', { state: { scrollTo: 'work', workTab: 'projects' } });
+  };
 
   if (loading) return <LoadingScreen />;
 

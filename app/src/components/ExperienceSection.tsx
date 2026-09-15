@@ -13,7 +13,7 @@ const ExperienceSection = () => (
       >
         Experience
       </h2>
-      <ExperienceList />
+      <ExperienceList preview />
     </div>
   </section>
 );

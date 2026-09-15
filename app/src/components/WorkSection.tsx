@@ -89,7 +89,7 @@ const WorkSection = () => {
           hidden={activeTab !== 'projects'}
           tabIndex={0}
         >
-          <ProjectsList />
+          <ProjectsList preview />
         </div>
         <div
           id="work-panel-writing"
@@ -98,7 +98,7 @@ const WorkSection = () => {
           hidden={activeTab !== 'writing'}
           tabIndex={0}
         >
-          <WritingList />
+          <WritingList preview />
         </div>
       </div>
     </section>

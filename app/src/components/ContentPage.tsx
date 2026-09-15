@@ -16,7 +16,10 @@ const ContentPage: React.FC<ContentPageProps> = ({
     <div className="flex flex-col min-h-screen relative w-full bg-secondary dark:bg-primary">
       <ThemeToggle />
 
-      <main className={`flex-grow ${fullBleed ? '' : 'pt-20 lg:pt-2'}`}>
+      <main
+        data-section-snap={fullBleed || undefined}
+        className={`flex-grow ${fullBleed ? '' : 'pt-20 lg:pt-2'}`}
+      >
         {children}
       </main>
     </div>
