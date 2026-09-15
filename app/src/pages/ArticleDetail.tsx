@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import ContentPage from '../components/ContentPage';
 import MarkdownRenderer from '../components/MarkdownRenderer';
@@ -8,7 +8,6 @@ import { Article, getArticleBySlug } from '../services/articleData';
 
 const ArticleDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const navigate = useNavigate();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,9 +19,6 @@ const ArticleDetail: React.FC = () => {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  const goBack = () =>
-    navigate('/', { state: { scrollTo: 'work', workTab: 'thoughts' } });
-
   if (loading) return <LoadingScreen />;
 
   if (!article) {
@@ -32,14 +28,13 @@ const ArticleDetail: React.FC = () => {
           <h1 className="text-4xl font-body text-primary dark:text-secondary mb-4">
             Article not found
           </h1>
-          <button
-            type="button"
-            onClick={goBack}
-            className="inline-flex items-center text-primary dark:text-secondary hover:underline bg-transparent border-none cursor-pointer"
+          <Link
+            to="/board"
+            className="inline-flex items-center text-primary dark:text-secondary hover:underline"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to thoughts
-          </button>
+            Back to board
+          </Link>
         </div>
       </ContentPage>
     );
@@ -48,14 +43,13 @@ const ArticleDetail: React.FC = () => {
   return (
     <ContentPage>
       <div className="w-full lg:w-3/5 mx-auto py-8 px-4">
-        <button
-          type="button"
-          onClick={goBack}
-          className="inline-flex items-center text-primary dark:text-secondary hover:underline bg-transparent border-none cursor-pointer"
+        <Link
+          to="/board"
+          className="inline-flex items-center text-primary dark:text-secondary hover:underline"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
-          Back to thoughts
-        </button>
+          Back to board
+        </Link>
         <h1 className="text-5xl font-body text-primary dark:text-secondary mt-4 mb-2">
           {article.title}
         </h1>

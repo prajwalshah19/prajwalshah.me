@@ -1,7 +1,6 @@
 // src/components/ContentPage.tsx
 import React from 'react';
 import ThemeToggle from './ThemeToggle';
-import Footer from './Footer';
 
 interface ContentPageProps {
   children: React.ReactNode;
@@ -20,8 +19,6 @@ const ContentPage: React.FC<ContentPageProps> = ({
       <main className={`flex-grow ${fullBleed ? '' : 'pt-20 lg:pt-2'}`}>
         {children}
       </main>
-
-      <Footer />
     </div>
   );
 };

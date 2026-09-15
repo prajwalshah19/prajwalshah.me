@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PortableText, PortableTextComponents } from '@portabletext/react';
 import { RichText, getAboutText } from '../services/textData';
 
@@ -26,7 +27,7 @@ const AboutSection: React.FC = () => {
   return (
     <section
       id="about"
-      className="w-full min-h-screen flex items-center bg-secondary dark:bg-primary py-16"
+      className="w-full min-h-screen flex items-start bg-secondary dark:bg-primary py-16"
     >
       <div className="w-full max-w-xl mx-auto px-6 text-center">
         <h2 className="text-2xl lg:text-3xl font-body text-primary dark:text-secondary mb-6">
@@ -39,6 +40,14 @@ const AboutSection: React.FC = () => {
               components={portableTextComponents}
             />
           )}
+        </div>
+        <div className="mt-6">
+          <Link
+            to="/board"
+            className="inline-flex items-center text-[11px] tracking-widest uppercase text-primary dark:text-secondary opacity-60 hover:opacity-100 transition-opacity duration-200"
+          >
+            board →
+          </Link>
         </div>
       </div>
     </section>

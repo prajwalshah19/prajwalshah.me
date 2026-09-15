@@ -21,7 +21,7 @@ const ProjectDetail: React.FC = () => {
   }, [slug]);
 
   const goBack = () =>
-    navigate('/', { state: { scrollTo: 'work', workTab: 'projects' } });
+    navigate('/', { state: { scrollTo: 'projects' } });
 
   if (loading) return <LoadingScreen />;
 
@@ -38,7 +38,7 @@ const ProjectDetail: React.FC = () => {
             className="inline-flex items-center text-primary dark:text-secondary hover:underline bg-transparent border-none cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to work
+            Back to projects
           </button>
         </div>
       </ContentPage>
@@ -54,7 +54,7 @@ const ProjectDetail: React.FC = () => {
           className="inline-flex items-center text-primary dark:text-secondary hover:underline mb-6 bg-transparent border-none cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
-          Back to work
+          Back to projects
         </button>
         <h1 className="text-5xl font-body text-primary dark:text-secondary mt-4 mb-2">
           {project.name}

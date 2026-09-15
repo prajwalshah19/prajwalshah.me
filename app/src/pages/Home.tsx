@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Hero from '../components/Hero';
 import AboutSection from '../components/AboutSection';
 import ExperienceSection from '../components/ExperienceSection';
-import WorkSection from '../components/WorkSection';
+import ProjectsSection from '../components/ProjectsSection';
 import ContactSection from '../components/ContactSection';
 import ContentPage from '../components/ContentPage';
 
@@ -30,7 +30,7 @@ const Home: React.FC = () => {
 
       <AboutSection />
       <ExperienceSection />
-      <WorkSection />
+      <ProjectsSection />
       <ContactSection />
     </ContentPage>
   );
