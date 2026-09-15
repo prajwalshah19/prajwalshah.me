@@ -31,7 +31,7 @@ const WritingList = ({ preview = false }: CollectionViewProps) => (
           ) : undefined
         }
         href={
-          !article.comingSoon && article.slug?.current
+          article.slug?.current
             ? `/articles/${article.slug.current}`
             : undefined
         }

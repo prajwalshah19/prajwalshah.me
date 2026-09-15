@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import ContentPage from '../components/ContentPage';
@@ -6,47 +6,47 @@ import MarkdownRenderer from '../components/MarkdownRenderer';
 import LoadingScreen from '../components/LoadingScreen';
 import { Article, getArticleBySlug } from '../services/articleData';
 
-const ArticleDetail: React.FC = () => {
+interface ArticleResult {
+  slug: string;
+  article: Article | null;
+  error: boolean;
+}
+
+const ArticleDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const location = useLocation();
-  const fromWriting =
-    (location.state as { returnTo?: string } | null)?.returnTo === '/writing';
+  const navigation = location.state as {
+    returnTo?: string;
+    title?: string;
+  } | null;
+  const fromWriting = navigation?.returnTo === '/writing';
   const backTo = fromWriting ? '/writing' : '/';
   const backState = fromWriting
     ? undefined
     : { scrollTo: 'work', workTab: 'writing' };
-  const [article, setArticle] = useState<Article | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [result, setResult] = useState<ArticleResult | null>(null);
 
   useEffect(() => {
     if (!slug) return;
+    let active = true;
     getArticleBySlug(slug)
-      .then(setArticle)
-      .catch(console.error)
-      .finally(() => setLoading(false));
+      .then((article) => {
+        if (active) setResult({ slug, article, error: false });
+      })
+      .catch((error) => {
+        console.error('Error fetching article:', error);
+        if (active) setResult({ slug, article: null, error: true });
+      });
+    return () => {
+      active = false;
+    };
   }, [slug]);
 
-  if (loading) return <LoadingScreen />;
+  if (slug && result?.slug !== slug) return <LoadingScreen />;
 
-  if (!article) {
-    return (
-      <ContentPage>
-        <div className="w-full lg:w-3/5 mx-auto py-8 px-4 text-center">
-          <h1 className="text-4xl font-body text-primary dark:text-secondary mb-4">
-            Article not found
-          </h1>
-          <Link
-            to={backTo}
-            state={backState}
-            className="inline-flex items-center text-primary dark:text-secondary hover:underline"
-          >
-            <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to writing
-          </Link>
-        </div>
-      </ContentPage>
-    );
-  }
+  const article = result?.article;
+  const title = article?.title || navigation?.title;
+  const comingSoon = !article || article.comingSoon || !article.content?.trim();
 
   return (
     <ContentPage>
@@ -60,17 +60,28 @@ const ArticleDetail: React.FC = () => {
           Back to writing
         </Link>
         <h1 className="text-5xl font-body text-primary dark:text-secondary mt-4 mb-2">
-          {article.title}
+          {title || (result?.error ? 'Article unavailable' : 'Coming soon')}
         </h1>
-        {article.comingSoon ? (
-          <p className="text-sm text-primary dark:text-secondary opacity-60 mt-4">
-            Coming soon
+        {result?.error ? (
+          <p
+            role="alert"
+            className="text-sm text-primary dark:text-secondary opacity-60 mt-4"
+          >
+            Couldn’t load this article. Please try again.
           </p>
+        ) : comingSoon ? (
+          title && (
+            <p className="text-sm text-primary dark:text-secondary opacity-60 mt-4">
+              Coming soon
+            </p>
+          )
         ) : (
           <>
-            <p className="text-sm text-primary dark:text-secondary mb-8">
-              {article.date}
-            </p>
+            {article.date && (
+              <p className="text-sm text-primary dark:text-secondary mb-8">
+                {article.date}
+              </p>
+            )}
             <MarkdownRenderer markdown={article.content} />
           </>
         )}

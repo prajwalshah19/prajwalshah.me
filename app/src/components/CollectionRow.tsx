@@ -67,7 +67,7 @@ const CollectionRow = ({
       {href ? (
         <Link
           to={href}
-          state={returnTo ? { returnTo } : undefined}
+          state={{ title, ...(returnTo ? { returnTo } : {}) }}
           className={className}
         >
           {content}
