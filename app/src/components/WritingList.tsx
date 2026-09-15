@@ -55,41 +55,48 @@ const WritingList = ({ limit }: { limit?: number }) => {
   }
 
   return (
-    <ul className="text-left divide-y divide-primary/30 dark:divide-secondary/30 border-y border-primary/30 dark:border-secondary/30">
-      {articles.map((article) => (
-        <li key={article._id}>
-          <Link
-            to={`/articles/${article.slug.current}`}
-            className="group flex items-start gap-4 py-5 text-primary dark:text-secondary"
-          >
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                <h3 className="text-sm font-body group-hover:underline underline-offset-4">
-                  {article.title}
-                </h3>
-                {article.date && (
-                  <time
-                    dateTime={article.date}
-                    className="shrink-0 text-[10px] opacity-60"
-                  >
-                    {formatDate(article.date)}
-                  </time>
+    <>
+      {articles.some((article) => article.preview) && (
+        <p className="mb-3 text-center text-[10px] tracking-wide text-primary dark:text-secondary opacity-60">
+          Local layout preview · sample articles
+        </p>
+      )}
+      <ul className="text-left divide-y divide-primary/30 dark:divide-secondary/30 border-y border-primary/30 dark:border-secondary/30">
+        {articles.map((article) => (
+          <li key={article._id}>
+            <Link
+              to={`/articles/${article.slug.current}`}
+              className="group flex items-start gap-4 py-5 text-primary dark:text-secondary"
+            >
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                  <h3 className="text-sm font-body group-hover:underline underline-offset-4">
+                    {article.title}
+                  </h3>
+                  {article.date && (
+                    <time
+                      dateTime={article.date}
+                      className="shrink-0 text-[10px] opacity-60"
+                    >
+                      {formatDate(article.date)}
+                    </time>
+                  )}
+                </div>
+                {article.excerpt?.length > 0 && (
+                  <p className="mt-2 text-xs leading-relaxed opacity-70 line-clamp-2 sm:line-clamp-1">
+                    {toPlainText(article.excerpt)}
+                  </p>
                 )}
               </div>
-              {article.excerpt?.length > 0 && (
-                <p className="mt-2 text-xs leading-relaxed opacity-70 line-clamp-2 sm:line-clamp-1">
-                  {toPlainText(article.excerpt)}
-                </p>
-              )}
-            </div>
-            <ArrowUpRight
-              aria-hidden="true"
-              className="w-3.5 h-3.5 shrink-0 mt-0.5 opacity-60 group-hover:opacity-100"
-            />
-          </Link>
-        </li>
-      ))}
-    </ul>
+              <ArrowUpRight
+                aria-hidden="true"
+                className="w-3.5 h-3.5 shrink-0 mt-0.5 opacity-60 group-hover:opacity-100"
+              />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 
