@@ -6,6 +6,7 @@ import ScrollToTop from './components/ScrollToTop';
 
 const Home = lazy(() => import('./pages/Home'));
 const ArticleDetail = lazy(() => import('./pages/ArticleDetail'));
+const Writing = lazy(() => import('./pages/Writing'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 const Board = lazy(() => import('./pages/Board'));
 const BoardDetail = lazy(() => import('./pages/BoardDetail'));
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/articles/:slug" element={<ArticleDetail />} />
+          <Route path="/writing" element={<Writing />} />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
           <Route path="/board" element={<Board />} />
           <Route path="/board/:slug" element={<BoardDetail />} />

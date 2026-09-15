@@ -29,11 +29,11 @@ const ArticleDetail: React.FC = () => {
             Article not found
           </h1>
           <Link
-            to="/board"
+            to="/writing"
             className="inline-flex items-center text-primary dark:text-secondary hover:underline"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to board
+            Back to writing
           </Link>
         </div>
       </ContentPage>
@@ -44,11 +44,11 @@ const ArticleDetail: React.FC = () => {
     <ContentPage>
       <div className="w-full lg:w-3/5 mx-auto py-8 px-4">
         <Link
-          to="/board"
+          to="/writing"
           className="inline-flex items-center text-primary dark:text-secondary hover:underline"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
-          Back to board
+          Back to writing
         </Link>
         <h1 className="text-5xl font-body text-primary dark:text-secondary mt-4 mb-2">
           {article.title}

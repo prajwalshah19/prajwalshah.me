@@ -11,6 +11,21 @@ export interface Article {
   content: string;
 }
 
+export type ArticleSummary = Pick<
+  Article,
+  '_id' | 'title' | 'slug' | 'excerpt' | 'date'
+>;
+
+export const getArticleSummaries = async (
+  limit?: number
+): Promise<ArticleSummary[]> => {
+  const slice = limit === undefined ? '' : '[0...$limit]';
+  const query = `*[_type == "article" && defined(slug.current)] | order(date desc, _id asc) ${slice} {
+    _id, title, slug, excerpt, date
+  }`;
+  return client.fetch(query, limit === undefined ? {} : { limit });
+};
+
 export const getArticles = async (): Promise<Article[]> => {
   const query = `*[_type == "article"] | order(date desc) {
       _id,
@@ -24,7 +39,9 @@ export const getArticles = async (): Promise<Article[]> => {
   return await client.fetch(query);
 };
 
-export const getArticleBySlug = async (slug: string): Promise<Article | null> => {
+export const getArticleBySlug = async (
+  slug: string
+): Promise<Article | null> => {
   const query = `*[_type == "article" && slug.current == $slug][0] {
       _id,
       title,
