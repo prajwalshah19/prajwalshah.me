@@ -46,6 +46,11 @@ export const getBoardItems = async (): Promise<BoardItem[]> => {
   return await client.fetch(query);
 };
 
+export const getBoardPreviewItems = async (): Promise<BoardItem[]> => {
+  const query = `*[_type == "boardItem"] | order(date desc, _id asc) [0...6] ${BOARD_ITEM_PROJECTION}`;
+  return await client.fetch(query);
+};
+
 export const getBoardItemBySlug = async (
   slug: string
 ): Promise<BoardItem | null> => {
