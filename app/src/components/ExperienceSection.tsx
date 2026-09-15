@@ -1,91 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { PortableText } from '@portabletext/react';
 import { Experience, getExperiences } from '../services/experienceData';
 
-function yearOf(iso: string): string {
-  if (!iso) return '';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return String(d.getFullYear());
-}
-
-const ExperienceSection: React.FC = () => {
+const ExperienceSection = () => {
   const [experiences, setExperiences] = useState<Experience[]>([]);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>(
+    'loading'
+  );
 
   useEffect(() => {
-    getExperiences().then(setExperiences).catch(console.error);
+    let active = true;
+    getExperiences()
+      .then((items) => {
+        if (!active) return;
+        setExperiences(items);
+        setStatus('ready');
+      })
+      .catch((error) => {
+        console.error('Error fetching experience:', error);
+        if (active) setStatus('error');
+      });
+    return () => {
+      active = false;
+    };
   }, []);
-
-  const toggle = (id: string) =>
-    setExpandedId((prev) => (prev === id ? null : id));
 
   return (
     <section
       id="experience"
+      aria-labelledby="experience-heading"
       className="w-full min-h-screen flex items-start bg-secondary dark:bg-primary py-16"
     >
-      <div className="w-full max-w-xl mx-auto px-6 text-center">
-        <h2 className="text-2xl lg:text-3xl font-body text-primary dark:text-secondary mb-6">
+      <div className="w-full max-w-xl mx-auto px-6">
+        <h2
+          id="experience-heading"
+          className="text-2xl lg:text-3xl font-body text-primary dark:text-secondary text-center mb-6"
+        >
           Experience
         </h2>
 
-        <ul className="text-left divide-y divide-primary/30 dark:divide-secondary/30 border-t border-b border-primary/30 dark:border-secondary/30 max-h-[60vh] overflow-y-auto">
-          {experiences.map((exp) => {
-            const isOpen = expandedId === exp._id;
-            return (
-              <li key={exp._id}>
-                <button
-                  type="button"
-                  onClick={() => toggle(exp._id)}
-                  aria-expanded={isOpen}
-                  aria-controls={`exp-body-${exp._id}`}
-                  className="w-full text-left py-2.5 flex items-center gap-3 focus:outline-none"
-                >
-                  <span className="font-mono text-[11px] tabular-nums text-primary dark:text-secondary opacity-70 w-9 shrink-0">
-                    {yearOf(exp.date)}
-                  </span>
-                  <span className="flex-1 flex flex-col sm:flex-row sm:items-baseline sm:gap-2 min-w-0">
-                    <span className="text-xs text-primary dark:text-secondary truncate">
-                      {exp.company}
+        {status !== 'ready' || experiences.length === 0 ? (
+          <p
+            role="status"
+            className="py-8 text-center text-xs text-primary dark:text-secondary opacity-70"
+          >
+            {status === 'loading'
+              ? 'Loading experience…'
+              : status === 'error'
+                ? 'Couldn’t load experience. Please try again later.'
+                : 'No experience listed yet.'}
+          </p>
+        ) : (
+          <ul className="text-left divide-y divide-primary/30 dark:divide-secondary/30 border-y border-primary/30 dark:border-secondary/30">
+            {experiences.map((experience) => (
+              <li
+                key={experience._id}
+                className="py-5 text-primary dark:text-secondary"
+              >
+                <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                  <h3 className="text-sm font-body">{experience.company}</h3>
+                  {experience.dateRange && (
+                    <span className="shrink-0 text-[10px] opacity-60">
+                      {experience.dateRange}
                     </span>
-                    <span className="text-[11px] text-primary dark:text-secondary opacity-70 truncate">
-                      {exp.position}
-                    </span>
-                  </span>
-                  <ChevronDown
-                    className={`w-3.5 h-3.5 text-primary dark:text-secondary shrink-0 transition-transform duration-200 ${
-                      isOpen ? 'rotate-180' : ''
-                    }`}
-                  />
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      id={`exp-body-${exp._id}`}
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.25, ease: 'easeOut' }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pb-3 pl-12 pr-4 text-[11px] text-primary dark:text-secondary opacity-90">
-                        <div className="text-[9px] opacity-70 mb-1">
-                          {exp.dateRange}
-                          {exp.location && ` · ${exp.location}`}
-                        </div>
-                        <PortableText value={exp.description} />
-                      </div>
-                    </motion.div>
                   )}
-                </AnimatePresence>
+                </div>
+                <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-xs opacity-70">
+                  <p>{experience.position}</p>
+                  {experience.location && (
+                    <p className="text-[10px]">{experience.location}</p>
+                  )}
+                </div>
+                {experience.description?.length > 0 && (
+                  <div className="mt-2 text-xs leading-relaxed opacity-70 [&>p+p]:mt-2">
+                    <PortableText value={experience.description} />
+                  </div>
+                )}
               </li>
-            );
-          })}
-        </ul>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   );
