@@ -3,8 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Hero from '../components/Hero';
 import AboutSection from '../components/AboutSection';
 import ExperienceSection from '../components/ExperienceSection';
-import ProjectsSection from '../components/ProjectsSection';
-import WritingSection from '../components/WritingSection';
+import WorkSection from '../components/WorkSection';
 import ContactSection from '../components/ContactSection';
 import ContentPage from '../components/ContentPage';
 
@@ -12,11 +11,12 @@ const Home: React.FC = () => {
   const location = useLocation();
 
   const scrollToId = (id: string) => {
-    const el = document.getElementById(id);
+    const targetId = id === 'projects' || id === 'writing' ? 'work' : id;
+    const el = document.getElementById(targetId);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Handle anchor navigation from other routes (e.g. /articles/:slug → /#projects)
+  // Return detail pages to their section on the homepage.
   useEffect(() => {
     const target = (location.state as { scrollTo?: string } | null)?.scrollTo;
     if (target) {
@@ -31,8 +31,7 @@ const Home: React.FC = () => {
 
       <AboutSection />
       <ExperienceSection />
-      <ProjectsSection />
-      <WritingSection />
+      <WorkSection />
       <ContactSection />
     </ContentPage>
   );

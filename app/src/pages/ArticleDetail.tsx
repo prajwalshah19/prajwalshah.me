@@ -30,7 +30,7 @@ const ArticleDetail: React.FC = () => {
           </h1>
           <Link
             to="/"
-            state={{ scrollTo: 'writing' }}
+            state={{ scrollTo: 'work', workTab: 'writing' }}
             className="inline-flex items-center text-primary dark:text-secondary hover:underline"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
@@ -46,7 +46,7 @@ const ArticleDetail: React.FC = () => {
       <div className="w-full lg:w-3/5 mx-auto py-8 px-4">
         <Link
           to="/"
-          state={{ scrollTo: 'writing' }}
+          state={{ scrollTo: 'work', workTab: 'writing' }}
           className="inline-flex items-center text-primary dark:text-secondary hover:underline"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />

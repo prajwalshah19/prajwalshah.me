@@ -21,7 +21,7 @@ const ProjectDetail: React.FC = () => {
   }, [slug]);
 
   const goBack = () =>
-    navigate('/', { state: { scrollTo: 'projects' } });
+    navigate('/', { state: { scrollTo: 'work', workTab: 'projects' } });
 
   if (loading) return <LoadingScreen />;
 
