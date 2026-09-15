@@ -29,7 +29,8 @@ const ArticleDetail: React.FC = () => {
             Article not found
           </h1>
           <Link
-            to="/writing"
+            to="/"
+            state={{ scrollTo: 'writing' }}
             className="inline-flex items-center text-primary dark:text-secondary hover:underline"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
@@ -44,7 +45,8 @@ const ArticleDetail: React.FC = () => {
     <ContentPage>
       <div className="w-full lg:w-3/5 mx-auto py-8 px-4">
         <Link
-          to="/writing"
+          to="/"
+          state={{ scrollTo: 'writing' }}
           className="inline-flex items-center text-primary dark:text-secondary hover:underline"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />

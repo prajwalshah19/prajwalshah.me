@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import WritingList from './WritingList';
 
 const WritingSection = () => (
@@ -15,15 +13,7 @@ const WritingSection = () => (
       >
         Writing
       </h2>
-      <WritingList limit={3} />
-      <div className="mt-6 text-center">
-        <Link
-          to="/writing"
-          className="inline-flex items-center gap-1 text-[11px] tracking-widest uppercase text-primary dark:text-secondary opacity-70 hover:opacity-100 transition-opacity duration-200"
-        >
-          All writing <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
-        </Link>
-      </div>
+      <WritingList />
     </div>
   </section>
 );

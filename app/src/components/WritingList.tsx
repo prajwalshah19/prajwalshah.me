@@ -16,7 +16,7 @@ function formatDate(value: string): string {
   return Number.isNaN(date.getTime()) ? value : dateFormatter.format(date);
 }
 
-const WritingList = ({ limit }: { limit?: number }) => {
+const WritingList = () => {
   const [articles, setArticles] = useState<ArticleSummary[]>([]);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>(
     'loading'
@@ -24,7 +24,7 @@ const WritingList = ({ limit }: { limit?: number }) => {
 
   useEffect(() => {
     let active = true;
-    getArticleSummaries(limit)
+    getArticleSummaries()
       .then((items) => {
         if (!active) return;
         setArticles(items);
@@ -37,7 +37,7 @@ const WritingList = ({ limit }: { limit?: number }) => {
     return () => {
       active = false;
     };
-  }, [limit]);
+  }, []);
 
   if (status !== 'ready' || articles.length === 0) {
     return (

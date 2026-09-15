@@ -22,22 +22,14 @@ const previewEnabled =
   import.meta.env.DEV &&
   new URLSearchParams(window.location.search).get('writingPreview') === '1';
 
-export const getArticleSummaries = async (
-  limit?: number
-): Promise<ArticleSummary[]> => {
-  const slice = limit === undefined ? '' : '[0...$limit]';
-  const query = `*[_type == "article" && defined(slug.current)] | order(date desc, _id asc) ${slice} {
+export const getArticleSummaries = async (): Promise<ArticleSummary[]> => {
+  const query = `*[_type == "article" && defined(slug.current)] | order(date desc, _id asc) {
     _id, title, slug, excerpt, date
   }`;
-  const articles = await client.fetch<ArticleSummary[]>(
-    query,
-    limit === undefined ? {} : { limit }
-  );
+  const articles = await client.fetch<ArticleSummary[]>(query);
   if (previewEnabled && articles.length === 0) {
     const { writingSamples } = await import('../dev/writingSamples');
-    return limit === undefined
-      ? writingSamples
-      : writingSamples.slice(0, limit);
+    return writingSamples;
   }
   return articles;
 };
