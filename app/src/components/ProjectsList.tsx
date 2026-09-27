@@ -20,7 +20,6 @@ const ProjectsList = ({ preview = false }: CollectionViewProps) => (
             ? `/projects/${project.slug.current}`
             : undefined
         }
-        returnTo={preview ? undefined : '/projects'}
         summary={
           project.description?.length > 0
             ? toPlainText(project.description)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
 import { PortableText } from '@portabletext/react';
 import ContentPage from '../components/ContentPage';
 import LoadingScreen from '../components/LoadingScreen';
@@ -44,13 +44,6 @@ const BoardDetail: React.FC = () => {
           <h1 className="text-3xl lg:text-4xl font-body text-primary dark:text-secondary mb-4">
             Not found
           </h1>
-          <Link
-            to="/board"
-            className="inline-flex items-center text-primary dark:text-secondary hover:underline"
-          >
-            <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to board
-          </Link>
         </div>
       </ContentPage>
     );
@@ -61,15 +54,7 @@ const BoardDetail: React.FC = () => {
   return (
     <ContentPage>
       <article className="w-full max-w-2xl mx-auto py-12 px-6">
-        <Link
-          to="/board"
-          className="inline-flex items-center text-xs text-primary dark:text-secondary hover:underline mb-6"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 mr-1" />
-          Back to board
-        </Link>
-
-        <h1 className="text-3xl lg:text-4xl font-body text-primary dark:text-secondary leading-tight mt-2 mb-3">
+        <h1 className="text-3xl lg:text-4xl font-body text-primary dark:text-secondary leading-tight mb-3">
           {item.title}
         </h1>
 

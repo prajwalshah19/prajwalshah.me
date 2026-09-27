@@ -9,7 +9,6 @@ interface CollectionRowProps {
   location?: string;
   summary?: ReactNode;
   href?: string;
-  returnTo?: string;
   compact?: boolean;
 }
 
@@ -20,7 +19,6 @@ const CollectionRow = ({
   location,
   summary,
   href,
-  returnTo,
   compact = false,
 }: CollectionRowProps) => {
   const Heading = compact ? 'h3' : 'h2';
@@ -65,11 +63,7 @@ const CollectionRow = ({
   return (
     <li>
       {href ? (
-        <Link
-          to={href}
-          state={{ title, ...(returnTo ? { returnTo } : {}) }}
-          className={className}
-        >
+        <Link to={href} className={className}>
           {content}
         </Link>
       ) : (

@@ -1,27 +1,16 @@
 // src/components/ContentPage.tsx
 import React from 'react';
-import ThemeToggle from './ThemeToggle';
+import CenteredNav from './CenteredNav';
 
 interface ContentPageProps {
   children: React.ReactNode;
-  /** When true, removes top padding so a hero can occupy the full viewport. */
-  fullBleed?: boolean;
 }
 
-const ContentPage: React.FC<ContentPageProps> = ({
-  children,
-  fullBleed = false,
-}) => {
+const ContentPage: React.FC<ContentPageProps> = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen relative w-full bg-secondary dark:bg-primary">
-      <ThemeToggle />
-
-      <main
-        data-section-snap={fullBleed || undefined}
-        className={`flex-grow ${fullBleed ? '' : 'pt-20 lg:pt-2'}`}
-      >
-        {children}
-      </main>
+    <div className="flex flex-col min-h-screen w-full bg-secondary dark:bg-primary">
+      <CenteredNav />
+      <main className="flex-grow">{children}</main>
     </div>
   );
 };

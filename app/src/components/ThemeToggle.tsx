@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
-const ThemeToggle: React.FC = () => {
+const ThemeToggle: React.FC<{ inline?: boolean }> = ({ inline = false }) => {
   // Initialize theme state based on <html> class
   const initialTheme = document.documentElement.classList.contains('dark')
     ? 'dark'
@@ -27,12 +27,20 @@ const ThemeToggle: React.FC = () => {
     <button
       onClick={toggleTheme}
       aria-label="Toggle theme"
-      className="fixed top-4 right-4 z-50 p-2 focus:outline-none bg-transparent border-none"
+      className={
+        inline
+          ? 'p-0 focus:outline-none bg-transparent border-none'
+          : 'fixed top-4 right-4 z-50 p-2 focus:outline-none bg-transparent border-none'
+      }
     >
       {currentTheme === 'light' ? (
-        <Moon className="w-6 h-6 text-primary dark:text-secondary" />
+        <Moon
+          className={`${inline ? 'w-4 h-4' : 'w-6 h-6'} text-primary dark:text-secondary`}
+        />
       ) : (
-        <Sun className="w-6 h-6 text-primary dark:text-secondary" />
+        <Sun
+          className={`${inline ? 'w-4 h-4' : 'w-6 h-6'} text-primary dark:text-secondary`}
+        />
       )}
     </button>
   );

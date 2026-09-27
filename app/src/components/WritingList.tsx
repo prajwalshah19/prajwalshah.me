@@ -35,7 +35,6 @@ const WritingList = ({ preview = false }: CollectionViewProps) => (
             ? `/articles/${article.slug.current}`
             : undefined
         }
-        returnTo={preview ? undefined : '/writing'}
         summary={
           article.comingSoon
             ? 'Coming soon'

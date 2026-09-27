@@ -1,6 +1,8 @@
 .markdown-body {
   background-color: transparent !important;
   color: var(--color-primary) !important;
+  font-family: inherit !important;
+  font-size: 0.875rem !important;
 }
 
 .dark .markdown-body {
@@ -8,8 +10,7 @@
 }
 
 .markdown-body h1 {
-  /* title of every page should be in the display font */
-  font-family: var(--font-body) !important;
+  font-family: 'Times New Roman', Times, serif !important;
 }
 
 .markdown-body pre {
@@ -82,8 +83,19 @@
 
 /* Images */
 .markdown-body img {
-  max-width: 100%;
-  border-radius: 6px;
+  display: block;
+  max-width: min(100%, 480px);
+  width: 100%;
+  height: auto;
+  margin: 1.5rem auto;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.dark .markdown-body img {
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 /* Links */

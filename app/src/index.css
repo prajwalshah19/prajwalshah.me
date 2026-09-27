@@ -38,6 +38,17 @@ html {
   display: none;
 }
 
+/* Text selection: flips with the site's primary/secondary colors. */
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+.dark ::selection {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+
 * {
   -ms-overflow-style: none;
   scrollbar-width: none;
