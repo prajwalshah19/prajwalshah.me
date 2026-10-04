@@ -1,45 +1,19 @@
-// Delete a single boardItem document by slug.
-//
-// Dry run (default):  sanity exec scripts/delete-board-item.ts -- <slug>
-// Apply:              sanity exec scripts/delete-board-item.ts -- <slug> --apply
+// Dry-run by default. See ../README.md for apply, backup and target flags.
 import {getCliClient} from 'sanity/cli'
+import {selectBoardItem} from './lib/boardIdentity.ts'
+import {withMigration, deleteDocuments, type Snapshot} from './lib/migration.ts'
 
 async function main() {
-  const args = process.argv.slice(2).filter((a) => a !== '--')
-  const apply = args.includes('--apply')
-  const slug = args.find((a) => a !== '--apply')
-
-  if (!slug) {
-    console.error('Usage: sanity exec scripts/delete-board-item.ts -- <slug> [--apply]')
-    process.exit(1)
-  }
-
-  const client = getCliClient()
-  const matches: {_id: string; title: string; slug?: {current: string}}[] = await client.fetch(
-    `*[_type == "boardItem" && slug.current == $slug]{_id, title, slug}`,
-    {slug},
-  )
-
-  if (matches.length === 0) {
-    console.log(`No boardItem found with slug "${slug}".`)
-    return
-  }
-
-  console.log(`Matches for slug "${slug}":`)
-  for (const m of matches) console.log(`  ${m._id}  (${m.title})`)
-
-  if (!apply) {
-    console.log('\nDry run — re-run with --apply to delete.')
-    return
-  }
-
-  for (const m of matches) {
-    await client.delete(m._id)
-    console.log(`✗ deleted ${m._id}`)
-  }
+  const args = process.argv.slice(2).filter((arg) => arg !== '--')
+  const slug = args.find((arg) => !arg.startsWith('--'))
+  if (!slug) throw new Error('Usage: sanity exec scripts/delete-board-item.ts --with-user-token -- <slug> [apply flags]')
+  const client = getCliClient({apiVersion: '2024-01-01'}).withConfig({perspective: 'raw', useCdn: false})
+  const documents = await client.fetch<Snapshot[]>('*[_type == "boardItem"]')
+  const matches = selectBoardItem(documents, slug)
+  const mutations = deleteDocuments(matches)
+  await withMigration(client.config(), matches, {slug, delete: matches.map((doc) => doc._id)}, args, async () => {
+    if (mutations.length) await client.mutate(mutations)
+  })
 }
 
-main().catch((err) => {
-  console.error(err)
-  process.exit(1)
-})
+main().catch((error) => { console.error(error); process.exitCode = 1 })

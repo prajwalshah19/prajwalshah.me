@@ -5,10 +5,10 @@ export interface Article {
   _id: string;
   title: string;
   slug: { current: string };
-  excerpt: PortableTextContent;
-  date: string;
-  link: string;
-  content: string;
+  excerpt?: PortableTextContent | null;
+  date?: string | null;
+  link?: string | null;
+  content?: string | null;
   comingSoon?: boolean;
 }
 

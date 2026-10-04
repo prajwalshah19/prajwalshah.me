@@ -4,10 +4,13 @@
   "version": "1.0.0",
   "main": "package.json",
   "license": "UNLICENSED",
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "sanity dev",
     "start": "sanity start",
     "build": "sanity build",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy"
   },

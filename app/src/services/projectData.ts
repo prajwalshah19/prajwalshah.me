@@ -13,6 +13,21 @@ export interface Project {
   content: string;
 }
 
+type ProjectDocument = Omit<Project, 'tags' | 'content'> & {
+  tags?: unknown;
+  content?: string | null;
+};
+
+function normalizeProject(project: ProjectDocument): Project {
+  return {
+    ...project,
+    tags: Array.isArray(project.tags)
+      ? project.tags.filter((tag): tag is string => typeof tag === 'string')
+      : [],
+    content: typeof project.content === 'string' ? project.content : '',
+  };
+}
+
 export const getProjects = async (): Promise<Project[]> => {
   const query = `*[_type == "project"] | order(date desc) {
       _id,
@@ -25,7 +40,8 @@ export const getProjects = async (): Promise<Project[]> => {
       tags,
       content
     }`;
-  return await client.fetch(query);
+  const projects = await client.fetch<ProjectDocument[]>(query);
+  return projects.map(normalizeProject);
 };
 
 export const getProjectBySlug = async (slug: string): Promise<Project | null> => {
@@ -40,5 +56,6 @@ export const getProjectBySlug = async (slug: string): Promise<Project | null> =>
       tags,
       content
     }`;
-  return await client.fetch(query, { slug });
+  const project = await client.fetch<ProjectDocument | null>(query, { slug });
+  return project ? normalizeProject(project) : null;
 };

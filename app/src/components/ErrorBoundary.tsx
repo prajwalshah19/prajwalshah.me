@@ -2,6 +2,7 @@ import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
+  compact?: boolean;
 }
 
 interface State {
@@ -26,7 +27,7 @@ class ErrorBoundary extends Component<Props, State> {
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-secondary dark:bg-primary">
+        <div role="alert" className={`${this.props.compact ? 'py-12' : 'min-h-screen'} flex items-center justify-center bg-secondary dark:bg-primary`}>
           <div className="text-center p-8">
             <h1 className="text-4xl font-body text-primary dark:text-secondary mb-4">
               Something went wrong

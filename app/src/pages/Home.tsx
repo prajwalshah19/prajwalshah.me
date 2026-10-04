@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useRequest } from '../hooks/useRequest';
+import RequestError from '../components/RequestError';
 import { PortableText, PortableTextComponents } from '@portabletext/react';
 import { ArrowUpRight } from 'lucide-react';
-import ContentPage from '../components/ContentPage';
 import ExperienceList from '../components/ExperienceList';
-import { RichText, PlainText, getAboutText, getGithubLink, getLinkedinLink } from '../services/textData';
+import { getAboutText, getGithubLink, getLinkedinLink } from '../services/textData';
 
 const portableTextComponents: PortableTextComponents = {
   block: {
@@ -20,15 +21,12 @@ const portableTextComponents: PortableTextComponents = {
 };
 
 const Home: React.FC = () => {
-  const [about, setAbout] = useState<RichText | null>(null);
-  const [githubLink, setGithubLink] = useState<PlainText | null>(null);
-  const [linkedinLink, setLinkedinLink] = useState<PlainText | null>(null);
-
-  useEffect(() => {
-    getAboutText().then(setAbout).catch(console.error);
-    getGithubLink().then(setGithubLink).catch(console.error);
-    getLinkedinLink().then(setLinkedinLink).catch(console.error);
-  }, []);
+  const aboutResult = useRequest('about', getAboutText);
+  const githubResult = useRequest('github', getGithubLink);
+  const linkedinResult = useRequest('linkedin', getLinkedinLink);
+  const about = aboutResult.status === 'ready' ? aboutResult.data : null;
+  const githubLink = githubResult.status === 'ready' ? githubResult.data : null;
+  const linkedinLink = linkedinResult.status === 'ready' ? linkedinResult.data : null;
 
   const links = [
     { label: 'GitHub', url: githubLink?.content },
@@ -36,8 +34,12 @@ const Home: React.FC = () => {
   ].filter((link) => link.url);
 
   return (
-    <ContentPage>
+    <>
       <div className="w-full max-w-2xl mx-auto px-6 pb-24">
+        {aboutResult.status === 'loading' && <p role="status">Loading about…</p>}
+        {aboutResult.status === 'error' && <RequestError label="the about section" />}
+        {aboutResult.status === 'ready' && !about?.content?.length && <p role="status">About information is not available yet.</p>}
+        {(githubResult.status === 'error' || linkedinResult.status === 'error') && <RequestError label="some social links" />}
         <div className="text-sm text-primary dark:text-secondary leading-relaxed">
           {about?.content && (
             <PortableText
@@ -52,7 +54,7 @@ const Home: React.FC = () => {
             {links.map((link) => (
               <a
                 key={link.label}
-                href={link.url}
+                href={link.url || undefined}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-sm text-primary dark:text-secondary opacity-70 hover:opacity-100 hover:underline underline-offset-4 transition-opacity"
@@ -69,7 +71,7 @@ const Home: React.FC = () => {
         </h2>
         <ExperienceList />
       </div>
-    </ContentPage>
+    </>
   );
 };
 

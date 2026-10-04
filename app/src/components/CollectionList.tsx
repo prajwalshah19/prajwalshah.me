@@ -1,12 +1,13 @@
 import {
-  useEffect,
   useLayoutEffect,
   useRef,
-  useState,
   type ReactNode,
 } from 'react';
 import { Link } from 'react-router-dom';
+import { useRequest } from '../hooks/useRequest';
 import { ArrowRight } from 'lucide-react';
+
+const EMPTY_ITEMS: never[] = [];
 
 export interface CollectionViewProps {
   preview?: boolean;
@@ -26,10 +27,9 @@ function CollectionList<T>({
   renderItem,
   preview = false,
 }: CollectionListProps<T>) {
-  const [items, setItems] = useState<T[]>([]);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>(
-    'loading'
-  );
+  const result = useRequest(label, load);
+  const { status } = result;
+  const items = result.status === 'ready' ? result.data : EMPTY_ITEMS;
   const listRef = useRef<HTMLUListElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
 
@@ -118,28 +118,11 @@ function CollectionList<T>({
     };
   }, [preview, items]);
 
-  useEffect(() => {
-    let active = true;
-    load()
-      .then((data) => {
-        if (!active) return;
-        setItems(data);
-        setStatus('ready');
-      })
-      .catch((error) => {
-        console.error(`Error fetching ${label}:`, error);
-        if (active) setStatus('error');
-      });
-    return () => {
-      active = false;
-    };
-  }, [load, label]);
-
   return (
     <>
       {status !== 'ready' || items.length === 0 ? (
         <p
-          role="status"
+          role={status === 'error' ? 'alert' : 'status'}
           className="py-8 text-center text-xs text-primary dark:text-secondary opacity-70"
         >
           {status === 'loading'

@@ -1,18 +1,13 @@
 // Replace the reviewed Board mocks and announce the requested article.
 // Dry run: sanity exec scripts/curate-portfolio-20260915.ts --with-user-token
-// Apply: append -- --apply --assets=/path/to/images --backup=/path/to/backup.json
-import {readFile, writeFile} from 'node:fs/promises'
+// Apply: append -- --apply --review=/path/to/review.json --assets=/path/to/images
+//   --backup=/path/to/new-backup.json --target=<project>/<dataset>
+import {readFile} from 'node:fs/promises'
 import {join} from 'node:path'
 import {getCliClient} from 'sanity/cli'
-import type {SanityDocument} from '@sanity/client'
-
-const mockSlugs = new Set([
-  'stoner', 'talk-is-cheap-show-me-the-code', 'why-i-switched-to-sanity',
-  'patrick-collison-s-site', 'the-death-of-ivan-ilyich', 'currently-obsessed-with',
-  'pyramid-song', 'the-map-is-not-the-territory', 'on-building-in-public',
-  'premature-optimization-is-the-root-of-all-evil', 'tokyo-in-october',
-  'the-pragmatic-programmer', 'west-lafayette-in-february', 'time', 'are-na',
-])
+import type {Mutation} from '@sanity/client'
+import {logicalId, planCreations} from './lib/boardIdentity.ts'
+import {withMigration, deleteDocuments, deletionReviewPath, validateDeletionReview, type Snapshot} from './lib/migration.ts'
 
 const pins = [
   {
@@ -41,49 +36,47 @@ const pins = [
 
 async function main() {
   const args = process.argv.slice(2)
-  const apply = args.includes('--apply')
-  const client = getCliClient({apiVersion: '2024-01-01'}).withConfig({perspective: 'raw'})
-  const documents = await client.fetch<SanityDocument[]>(
-    '*[_type in ["boardItem", "article"]]',
-  )
-  const board = documents.filter((doc) => doc._type === 'boardItem')
-  const obsolete = board.filter((doc) => !pins.some((pin) => pin.id === doc._id))
-  for (const doc of obsolete) {
-    const slug = (doc.slug as {current?: string} | undefined)?.current
-    if (!slug || !mockSlugs.has(slug)) {
-      throw new Error(`Unreviewed Board item: ${doc._id}; inspect before deleting`)
-    }
+  const client = getCliClient({apiVersion: '2024-01-01'}).withConfig({perspective: 'raw', useCdn: false})
+  const article = {
+    _id: 'article-but-what-about-the-consumer',
+    _type: 'article',
+    title: 'But what about the consumer?',
+    slug: {_type: 'slug', current: 'but-what-about-the-consumer'},
+    comingSoon: true,
   }
-  console.log(JSON.stringify({
-    remove: obsolete.map((doc) => ({id: doc._id, title: doc.title})),
+  const identities = [...pins.map((pin) => ({_id: pin.id, _type: 'boardItem', slug: {current: pin.slug}})), article]
+  const ids = identities.flatMap(({_id}) => [_id, `drafts.${_id}`])
+  const documents = await client.fetch<Snapshot[]>(
+    '*[_type in ["boardItem", "article"] || _id in $ids]', {ids},
+  )
+  const creates = planCreations(documents, identities)
+  const board = documents.filter((doc) => doc._type === 'boardItem')
+  const obsolete = board.filter((doc) => !pins.some((pin) => pin.id === logicalId(doc._id)))
+  const plan = {
+    remove: obsolete.map((doc) => ({_id: doc._id, _rev: doc._rev, title: doc.title})),
+    create: creates,
     keep: pins.map((pin) => pin.title),
     writing: 'But what about the consumer? — Coming soon',
-  }, null, 2))
-  if (!apply) return
-
-  const assets = args.find((arg) => arg.startsWith('--assets='))?.slice(9)
-  const backup = args.find((arg) => arg.startsWith('--backup='))?.slice(9)
-  if (!assets || !backup) throw new Error('--assets and --backup are required')
-  // Exclusive creation prevents replacing a previous backup during a retry.
-  await writeFile(backup, JSON.stringify(documents, null, 2), {flag: 'wx', mode: 0o600})
-  console.log(`Backup saved: ${backup}`)
-
-  let transaction = client.transaction()
-  for (const doc of obsolete) {
-    // Fail the whole transaction if a document changed after the backup.
-    transaction = transaction
-      .patch(doc._id, (patch) => patch.ifRevisionId(doc._rev).set({title: doc.title}))
-      .delete(doc._id)
   }
+  const reviewPath = deletionReviewPath(args)
+  if (reviewPath) {
+    const review: unknown = JSON.parse(await readFile(reviewPath, 'utf8'))
+    const config = client.config()
+    validateDeletionReview(review, `${config.projectId}/${config.dataset}`, obsolete)
+  }
+  await withMigration(client.config(), documents, plan, args, async () => {
+  const assets = args.find((arg) => arg.startsWith('--assets='))?.slice(9)
+  if (!assets) throw new Error('--assets is required')
+  const mutations: Mutation[] = deleteDocuments(obsolete)
   for (const pin of pins) {
-    if (board.some((doc) => doc._id === pin.id)) continue
+    if (!creates.some((doc) => doc._id === pin.id)) continue
     const image = await client.assets.upload('image', await readFile(join(assets, pin.filename)), {
       filename: pin.filename,
       contentType: 'image/jpeg',
       creditLine: pin.credit,
       source: {id: pin.imageUrl, name: pin.credit, url: pin.source},
     })
-    transaction = transaction.createIfNotExists({
+    mutations.push({create: {
       _id: pin.id,
       _type: 'boardItem',
       title: pin.title,
@@ -93,17 +86,12 @@ async function main() {
       date: '2026-09-15',
       featured: false,
       image: {_type: 'image', asset: {_type: 'reference', _ref: image._id}},
-    })
+    }})
   }
-  transaction = transaction.createIfNotExists({
-    _id: 'article-but-what-about-the-consumer',
-    _type: 'article',
-    title: 'But what about the consumer?',
-    slug: {_type: 'slug', current: 'but-what-about-the-consumer'},
-    comingSoon: true,
-  })
-  await transaction.commit()
+  if (creates.some((doc) => doc._id === article._id)) mutations.push({create: article})
+  if (mutations.length) await client.mutate(mutations)
   console.log('Applied Board and Writing curation.')
+  })
 }
 
 main().catch((error) => {

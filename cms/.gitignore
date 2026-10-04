@@ -34,5 +34,6 @@
 *.local
 *.env
 
-sanity.cli.ts
-sanity.config.ts
+# Local credentials stay ignored. Studio/CLI configuration is versioned.
+.env.*
+!.env.example

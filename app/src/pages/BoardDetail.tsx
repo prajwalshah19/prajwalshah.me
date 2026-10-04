@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useRequest } from '../hooks/useRequest';
+import RequestError from '../components/RequestError';
 import { useParams } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { PortableText } from '@portabletext/react';
-import ContentPage from '../components/ContentPage';
 import LoadingScreen from '../components/LoadingScreen';
 import MarkdownRenderer from '../components/MarkdownRenderer';
 import {
-  BoardItem,
   getBoardItemBySlug,
   imageUrlFromRef,
 } from '../services/boardData';
@@ -24,35 +24,27 @@ function formatDate(iso: string): string {
 
 const BoardDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [item, setItem] = useState<BoardItem | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!slug) return;
-    getBoardItemBySlug(slug)
-      .then(setItem)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, [slug]);
-
-  if (loading) return <LoadingScreen />;
+  const result = useRequest(slug || '', getBoardItemBySlug);
+  if (result.status === 'loading') return <LoadingScreen />;
+  if (result.status === 'error') return <RequestError label="this board item" />;
+  const item = result.data;
 
   if (!item) {
     return (
-      <ContentPage>
+      <>
         <div className="w-full max-w-2xl mx-auto py-12 px-6 text-center">
           <h1 className="text-3xl lg:text-4xl font-body text-primary dark:text-secondary mb-4">
             Not found
           </h1>
         </div>
-      </ContentPage>
+      </>
     );
   }
 
   const img = imageUrlFromRef(item.imageAssetRef);
 
   return (
-    <ContentPage>
+    <>
       <article className="w-full max-w-2xl mx-auto py-12 px-6">
         <h1 className="text-3xl lg:text-4xl font-body text-primary dark:text-secondary leading-tight mb-3">
           {item.title}
@@ -113,7 +105,7 @@ const BoardDetail: React.FC = () => {
           </a>
         )}
       </article>
-    </ContentPage>
+    </>
   );
 };
 

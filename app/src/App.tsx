@@ -1,7 +1,7 @@
 // src/App.tsx
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
-import LoadingScreen from './components/LoadingScreen';
+import { lazy } from 'react';
+import RouteLayout from './components/RouteLayout';
 import ScrollToTop from './components/ScrollToTop';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -15,8 +15,8 @@ function App() {
   return (
     <HashRouter>
       <ScrollToTop />
-      <Suspense fallback={<LoadingScreen />}>
         <Routes>
+          <Route element={<RouteLayout />}>
           <Route path="/" element={<Home />} />
           <Route
             path="/experience"
@@ -34,8 +34,9 @@ function App() {
           <Route path="/projects/:slug" element={<ProjectDetail />} />
           <Route path="/board" element={<Board />} />
           <Route path="/board/:slug" element={<BoardDetail />} />
+            <Route path="*" element={<p className="p-8 text-center">Page not found</p>} />
+          </Route>
         </Routes>
-      </Suspense>
     </HashRouter>
   );
 }

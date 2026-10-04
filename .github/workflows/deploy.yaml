@@ -1,45 +1,86 @@
-name: Deploy React App to GitHub Pages
+name: Validate and deploy portfolio
 
 on:
+  pull_request:
   push:
-    branches: [ main ]
+    branches: [main]
+
+permissions:
+  contents: read
+
+# Do not cancel a deployment midway through publishing.
+concurrency:
+  group: portfolio-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  validate:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 20
+    env:
+      CI: true
+      SANITY_STUDIO_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID || 'kp6s20e6' }}
+      SANITY_STUDIO_DATASET: ${{ vars.SANITY_DATASET || 'production' }}
+      VITE_SANITY_PROJECT_ID: ${{ vars.SANITY_PROJECT_ID || 'kp6s20e6' }}
+      VITE_SANITY_DATASET: ${{ vars.SANITY_DATASET || 'production' }}
+      SANITY_CLI_NO_TELEMETRY: '1'
     steps:
-      # Checkout the entire repository
-      - name: Checkout repo
-        uses: actions/checkout@v2
-
-      # Change working directory to app
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
-      # Install dependencies in the app folder
-      - name: Install dependencies
+          node-version: '22.22.2'
+      - name: Pin Yarn Classic
+        run: npm install --global yarn@1.22.22
+      - name: Install frontend dependencies
         working-directory: app
-        run: yarn install
-
-      # Build the React app
-      - name: Build React App
+        run: yarn install --frozen-lockfile --non-interactive
+      - name: Install CMS dependencies
+        working-directory: cms
+        run: yarn install --frozen-lockfile --non-interactive
+      - name: Test frontend
         working-directory: app
-        env:
-          VITE_SANITY_PROJECT_ID: ${{ secrets.VITE_SANITY_PROJECT_ID }}
-          VITE_SANITY_DATASET: ${{ secrets.VITE_SANITY_DATASET }}
+        run: yarn test
+      - name: Lint frontend
+        working-directory: app
+        run: yarn lint
+      - name: Typecheck and build frontend
+        working-directory: app
         run: yarn build
-
-      - name: Create CNAME file
+      - name: Test CMS maintenance plans
+        working-directory: cms
+        run: yarn test
+      - name: Typecheck CMS
+        working-directory: cms
+        run: yarn typecheck
+      - name: Build Studio
+        working-directory: cms
+        run: yarn build
+      - name: Prepare domain
         run: echo 'www.prajwalshah.me' > app/dist/CNAME
+      - name: Preserve validated frontend build
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: app/dist
+          if-no-files-found: error
+          retention-days: 7
 
-      # Deploy the build folder from the app directory to the GitHub Pages repo
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+  deploy:
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend-dist
+          path: dist
+      - name: Deploy validated build to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.GH_PAGES_TOKEN }}
-          publish_dir: app/dist
+          publish_dir: dist
           external_repository: prajwalshah19/prajwalshah19.github.io
           publish_branch: build

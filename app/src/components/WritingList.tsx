@@ -38,7 +38,7 @@ const WritingList = ({ preview = false }: CollectionViewProps) => (
         summary={
           article.comingSoon
             ? 'Coming soon'
-            : article.excerpt?.length > 0
+            : article.excerpt && article.excerpt.length > 0
               ? toPlainText(article.excerpt)
               : undefined
         }
