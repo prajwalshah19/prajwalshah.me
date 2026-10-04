@@ -17,6 +17,27 @@ Verified October 4, 2026. Critical changes are in `35b48f7`; this record accompa
 
 The exact staged code passed **40 frontend tests and 19 CMS tests**, frontend lint, frontend typecheck/build, CMS typecheck/build, and diff whitespace checks on Node 22.22.2. The full staged snapshot excluded the unrelated local article-schema modification. Independent frontend review approved after correcting footnote scrolling and formatting-dependent payload assertions.
 
+## Production-build browser follow-up
+
+On October 4, the real `app` production build was served using `yarn preview` on loopback. HTTP returned 200. Installed Chrome rendered the actual homepage with external DNS deliberately blocked, without mocked response payloads or substituted components. Its captured DOM contained the Projects, Writing, and Board navigation links and three explicit failure alerts for about, social links, and experience. This verifies actual bundle loading, lazy homepage imports, and readable network-failure output while retaining navigation. It does not prove navigation clicks or successful CMS-backed rendering.
+
+The isolated headless Chrome process produced the homepage DOM but failed to exit, logging macOS display-link/allocator errors. The multi-route run was cancelled before subsequent routes ran. The browser bridge was unavailable. Evidence remains in the task scratch `architecture-20261003/browser/_.html` and `_.log`. No browser extension was installed and no user browser profile was used.
+
+### Requirement-to-acceptance mapping
+
+| Requirement / changed public output | Concrete observed evidence | Remaining acceptance constraint |
+| --- | --- | --- |
+| Reviewed deletion IDs/revisions, exact target and backup | CMS guard tests reject stale/missing/extra/duplicate/wrong-target manifests and unsafe apply arguments; local backup behavior exercised | Actual deletion requires a disposable authenticated dataset and reviewed content. Production mutation was deliberately not used as a test. |
+| Collision-safe creation and dry-run seed workflow | Creation planner tests reject incompatible identities and existing slug owners, preserving seed text; entrypoint wiring reviewed | CLI entrypoints fetch remote data before guards. No remote snapshot or transaction was exercised, so no end-to-end safety claim. |
+| Reproducible app and Studio packaging | Exact staged source, clean frozen installs, actual app and Studio builds succeeded under Node 22.22.2; built app served HTTP 200 and rendered in Chrome | Studio authentication and deployed environment remain untested. |
+| CI-gated artifact deployment | Workflow structural assertions passed for check commands, dependency gate, branch condition and artifact names | Hosted runner and deployment require a push and external credentials, neither performed. |
+| Request failures remain visible without losing navigation | Actual built homepage in Chrome rendered three failure alerts and header links under network failure | Click recovery and successful remote responses not exercised in browser. Request races and nullable responses are covered by component tests only. |
+| Fragment, duplicate-heading, footnote and backlink navigation | Actual router/Markdown component tests passed, including red/green footnote regression | Physical scrolling and actual published Markdown remain unverified. Browser run stopped before a content route. |
+| Responsive images, format fallback and intrinsic dimensions | Media component tests cover width caps, responsive attributes, invalid IDs and original SVG fallback, with red/green evidence | Real image CDN responses, decoded dimensions and transfer savings remain unmeasured. |
+| Lean lists with complete details | Projection tests distinguish summary/detail outputs; deliberate inline content/tags regression was detected | Live GROQ responses and payload-size comparison remain unverified. Pagination intentionally unchanged. |
+
+The real browser check adds acceptance evidence for packaging and network-failure rendering only. It does not convert the synthetic tests into full end-to-end validation. Remaining production boundaries are explicitly blocked or unexercised, not passed.
+
 ## Preservation and operational limits
 
 - Project seed text was compared byte-for-byte with the initial backup and preserved.
