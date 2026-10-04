@@ -24,4 +24,4 @@ Recommended: small pure planning helpers plus the existing migration wrapper. Ad
 
 ## Scope boundaries
 
-The lower-priority Markdown-anchor and image/list performance observations are deferred rather than mixed into the critical safety/reproducibility work. No actual deletion review manifest will be fabricated or obtained from the live dataset during implementation.
+The lower-priority Markdown-anchor and image/list performance observations were initially deferred from the critical safety/reproducibility commit, then resumed in `../plans/2026-10-04-remaining-frontend-audit.md`. No actual deletion review manifest was fabricated or obtained from the live dataset during implementation.

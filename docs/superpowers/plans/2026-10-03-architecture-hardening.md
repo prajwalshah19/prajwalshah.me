@@ -1,5 +1,7 @@
 # Architecture Hardening Implementation Plan
 
+Execution status: the scoped hardening was integrated in `35b48f7`. This original checklist is retained as historical planning, not a current task tracker. See `2026-10-03-architecture-audit-followthrough.md` and `2026-10-04-remaining-frontend-audit.md` for completed follow-through and explicit validation limits. The newer scope deliberately hardens the previously excluded draft-project script while preserving its seed content.
+
 > **For agentic workers:** Use subagent-driven-development or executing-plans. Preserve unrelated local edits and never execute CMS mutations against the live dataset.
 
 **Goal:** Fix the four approved audit findings with local regression tests and reproducible checks.

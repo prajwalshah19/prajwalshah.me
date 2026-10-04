@@ -1,11 +1,11 @@
 import { toPlainText } from '@portabletext/react';
-import { getProjects } from '../services/projectData';
+import { getProjectSummaries } from '../services/projectData';
 import CollectionList, { type CollectionViewProps } from './CollectionList';
 import CollectionRow from './CollectionRow';
 
 const ProjectsList = ({ preview = false }: CollectionViewProps) => (
   <CollectionList
-    load={getProjects}
+    load={getProjectSummaries}
     label="projects"
     allHref="/projects"
     preview={preview}

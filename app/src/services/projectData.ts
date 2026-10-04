@@ -13,6 +13,15 @@ export interface Project {
   content: string;
 }
 
+export type ProjectSummary = Pick<Project, '_id' | 'name' | 'slug' | 'description' | 'dates'>;
+
+export const getProjectSummaries = async (): Promise<ProjectSummary[]> => {
+  const query = `*[_type == "project"] | order(date desc, _id asc) {
+    _id, name, slug, description, dates
+  }`;
+  return client.fetch<ProjectSummary[]>(query);
+};
+
 type ProjectDocument = Omit<Project, 'tags' | 'content'> & {
   tags?: unknown;
   content?: string | null;

@@ -2,10 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PortableText } from '@portabletext/react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
-import { BoardItem, imageUrlFromRef } from '../services/boardData';
+import { type BoardItemSummary } from '../services/boardData';
+import BoardImage from './BoardImage';
 
 interface BoardTileProps {
-  item: BoardItem;
+  item: BoardItemSummary;
 }
 
 const baseTile =
@@ -35,7 +36,7 @@ const BoardTile: React.FC<BoardTileProps> = ({ item }) => {
   }
 
   // Internal detail page when there's long-form content + a slug to route to.
-  if ((item.markdown || item.body) && item.slug?.current) {
+  if (item.hasDetail && item.slug?.current) {
     return (
       <Link
         to={`/board/${item.slug.current}`}
@@ -53,21 +54,13 @@ const BoardTile: React.FC<BoardTileProps> = ({ item }) => {
   return <div className={baseTile}>{inner}</div>;
 };
 
-function renderByType(item: BoardItem): React.ReactNode {
-  const img = imageUrlFromRef(item.imageAssetRef);
+function renderByType(item: BoardItemSummary): React.ReactNode {
 
   switch (item.type) {
     case 'photo':
       return (
         <>
-          {img && (
-            <img
-              src={img}
-              alt={item.title}
-              className="w-full h-auto block"
-              loading="lazy"
-            />
-          )}
+          <BoardImage assetRef={item.imageAssetRef} alt={item.title} className="w-full h-auto block" />
           {(item.title || item.caption) && (
             <div className="mt-2">
               {item.title && (
@@ -84,14 +77,7 @@ function renderByType(item: BoardItem): React.ReactNode {
     case 'book':
       return (
         <>
-          {img && (
-            <img
-              src={img}
-              alt={item.title}
-              className="w-full h-auto block mb-2"
-              loading="lazy"
-            />
-          )}
+          <BoardImage assetRef={item.imageAssetRef} alt={item.title} className="w-full h-auto block mb-2" />
           <p className="text-xs font-body">{item.title}</p>
           {item.creator && (
             <p className="text-[10px] opacity-70 mt-0.5">by {item.creator}</p>
@@ -124,14 +110,7 @@ function renderByType(item: BoardItem): React.ReactNode {
     case 'song':
       return (
         <>
-          {img && (
-            <img
-              src={img}
-              alt={item.title}
-              className="w-full h-auto block mb-2"
-              loading="lazy"
-            />
-          )}
+          <BoardImage assetRef={item.imageAssetRef} alt={item.title} className="w-full h-auto block mb-2" />
           <p className="text-xs font-body">{item.title}</p>
           {item.creator && (
             <p className="text-[10px] opacity-70 mt-0.5">{item.creator}</p>
@@ -145,14 +124,7 @@ function renderByType(item: BoardItem): React.ReactNode {
     case 'place':
       return (
         <>
-          {img && (
-            <img
-              src={img}
-              alt={item.title}
-              className="w-full h-auto block"
-              loading="lazy"
-            />
-          )}
+          <BoardImage assetRef={item.imageAssetRef} alt={item.title} className="w-full h-auto block" />
           <div className="mt-2">
             <p className="text-xs font-body">{item.title}</p>
             {item.caption && (
@@ -182,14 +154,7 @@ function renderByType(item: BoardItem): React.ReactNode {
     case 'link':
       return (
         <>
-          {img && (
-            <img
-              src={img}
-              alt={item.title}
-              className="w-full h-auto block mb-2"
-              loading="lazy"
-            />
-          )}
+          <BoardImage assetRef={item.imageAssetRef} alt={item.title} className="w-full h-auto block mb-2" />
           <p className="text-xs font-body">{item.title}</p>
           {item.caption && (
             <p className="text-[10px] opacity-80 mt-1">{item.caption}</p>
@@ -201,14 +166,7 @@ function renderByType(item: BoardItem): React.ReactNode {
     default:
       return (
         <>
-          {img && (
-            <img
-              src={img}
-              alt={item.title}
-              className="w-full h-auto block mb-2"
-              loading="lazy"
-            />
-          )}
+          <BoardImage assetRef={item.imageAssetRef} alt={item.title} className="w-full h-auto block mb-2" />
           <p className="text-xs font-body">{item.title}</p>
           {item.creator && (
             <p className="text-[10px] opacity-70 mt-0.5">{item.creator}</p>

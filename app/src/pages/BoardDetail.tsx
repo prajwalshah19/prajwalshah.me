@@ -6,10 +6,8 @@ import { ArrowUpRight } from 'lucide-react';
 import { PortableText } from '@portabletext/react';
 import LoadingScreen from '../components/LoadingScreen';
 import MarkdownRenderer from '../components/MarkdownRenderer';
-import {
-  getBoardItemBySlug,
-  imageUrlFromRef,
-} from '../services/boardData';
+import BoardImage from '../components/BoardImage';
+import { getBoardItemBySlug } from '../services/boardData';
 
 function formatDate(iso: string): string {
   if (!iso) return '';
@@ -41,8 +39,6 @@ const BoardDetail: React.FC = () => {
     );
   }
 
-  const img = imageUrlFromRef(item.imageAssetRef);
-
   return (
     <>
       <article className="w-full max-w-2xl mx-auto py-12 px-6">
@@ -66,14 +62,12 @@ const BoardDetail: React.FC = () => {
           )}
         </div>
 
-        {img && (
-          <img
-            src={img}
-            alt={item.title}
-            className="w-full h-auto block mb-6 border border-primary/40 dark:border-secondary/40"
-            loading="lazy"
-          />
-        )}
+        <BoardImage
+          assetRef={item.imageAssetRef}
+          alt={item.title}
+          detail
+          className="w-full h-auto block mb-6 border border-primary/40 dark:border-secondary/40"
+        />
 
         {item.markdown ? (
           <div className="mb-6">

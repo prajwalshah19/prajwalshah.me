@@ -26,7 +26,9 @@ export interface BoardItem {
   featured?: boolean;
 }
 
-const BOARD_ITEM_PROJECTION = `{
+export type BoardItemSummary = Omit<BoardItem, 'markdown'> & { hasDetail: boolean };
+
+const BOARD_ITEM_FIELDS = `
   _id,
   title,
   slug,
@@ -35,21 +37,25 @@ const BOARD_ITEM_PROJECTION = `{
   creator,
   caption,
   body,
-  markdown,
   link,
   date,
-  featured
-}`;
+  featured`;
 
-export const getBoardItems = async (): Promise<BoardItem[]> => {
-  const query = `*[_type == "boardItem"] | order(featured desc, date desc) ${BOARD_ITEM_PROJECTION}`;
+export const getBoardItems = async (): Promise<BoardItemSummary[]> => {
+  const query = `*[_type == "boardItem"] | order(featured desc, date desc, _id asc) {
+    ${BOARD_ITEM_FIELDS},
+    "hasDetail": coalesce(length(markdown) > 0 || count(body) > 0, false)
+  }`;
   return await client.fetch(query);
 };
 
 export const getBoardItemBySlug = async (
   slug: string
 ): Promise<BoardItem | null> => {
-  const query = `*[_type == "boardItem" && slug.current == $slug][0] ${BOARD_ITEM_PROJECTION}`;
+  const query = `*[_type == "boardItem" && slug.current == $slug][0] {
+    ${BOARD_ITEM_FIELDS},
+    markdown
+  }`;
   return await client.fetch(query, { slug });
 };
 
@@ -58,14 +64,42 @@ const projectId =
 const dataset =
   (import.meta.env.VITE_SANITY_DATASET as string | undefined) || '';
 
-/**
- * Convert a Sanity image asset _ref ("image-abc123-1920x1080-jpg") to a CDN URL.
- * Returns null when the ref is missing or unparseable.
- */
-export function imageUrlFromRef(ref: string | undefined): string | null {
+function imageAssetFromRef(ref: string | undefined) {
   if (!ref) return null;
-  const match = ref.match(/^image-([a-f0-9]+)-(\d+x\d+)-(\w+)$/);
+  const match = ref.match(/^image-([a-zA-Z0-9]+)-(\d+)x(\d+)-(\w+)$/);
   if (!match) return null;
-  const [, id, dims, ext] = match;
-  return `https://cdn.sanity.io/images/${projectId}/${dataset}/${id}-${dims}.${ext}`;
+  const [, id, rawWidth, rawHeight, ext] = match;
+  const width = Number(rawWidth);
+  const height = Number(rawHeight);
+  if (!Number.isSafeInteger(width) || !Number.isSafeInteger(height) || width <= 0 || height <= 0) return null;
+  return {
+    width, height,
+    transformable: ['jpg', 'jpeg', 'pjpg', 'png', 'webp', 'tif', 'tiff', 'avif', 'gif'].includes(ext.toLowerCase()),
+    url: `https://cdn.sanity.io/images/${projectId}/${dataset}/${id}-${rawWidth}x${rawHeight}.${ext}`,
+  };
+}
+
+/** Request a bounded raster image rather than the original upload. */
+export function imageUrlFromRef(ref: string | undefined, width = 640): string | null {
+  const asset = imageAssetFromRef(ref);
+  if (!asset || !Number.isSafeInteger(width) || width <= 0) return null;
+  if (!asset.transformable) return asset.url;
+  return `${asset.url}?w=${Math.min(width, asset.width)}&fit=max&auto=format&q=80`;
+}
+
+export function responsiveImageFromRef(ref: string | undefined, detail = false) {
+  const asset = imageAssetFromRef(ref);
+  if (!asset) return null;
+  if (!asset.transformable) return { src: asset.url, width: asset.width, height: asset.height };
+  const widths = [...new Set((detail ? [640, 960, 1280, 1920] : [320, 640, 960, 1280])
+    .map((width) => Math.min(width, asset.width)))];
+  return {
+    src: imageUrlFromRef(ref, detail ? 1280 : 640)!,
+    srcSet: widths.map((width) => `${imageUrlFromRef(ref, width)} ${width}w`).join(', '),
+    sizes: detail
+      ? '(min-width: 672px) 624px, calc(100vw - 48px)'
+      : '(min-width: 640px) 280px, calc(100vw - 74px)',
+    width: asset.width,
+    height: asset.height,
+  };
 }
