@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import ReactMarkdown, { type Components, type ExtraProps } from 'react-markdown';
 import { Link, useLocation } from 'react-router-dom';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import { ArrowUpRight } from 'lucide-react';
 import 'github-markdown-css';
 import '../styles/markdown-overrides.css';
@@ -88,7 +89,12 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ markdown }) => {
 
   return (
     <div ref={container} className="markdown-body">
-      <ReactMarkdown remarkPlugins={[remarkGfm, remarkHeadingIds]} components={components}>
+      {/* rehypeRaw renders inline HTML/SVG authored in CMS markdown (diagrams). */}
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm, remarkHeadingIds]}
+        rehypePlugins={[rehypeRaw]}
+        components={components}
+      >
         {markdown}
       </ReactMarkdown>
     </div>

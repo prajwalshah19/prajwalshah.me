@@ -51,9 +51,7 @@ export const article = defineType({
       name: 'link',
       title: 'Article Link',
       type: 'string',
-      validation: (rule) => rule.custom((value, context) =>
-        context.document?.comingSoon || value ? true : 'Add an article link',
-      ),
+      description: 'Optional external link (unused by the site currently).',
     }),
     defineField({
       name: 'content',

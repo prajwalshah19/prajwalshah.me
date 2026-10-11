@@ -3,10 +3,31 @@
   color: var(--color-primary) !important;
   font-family: inherit !important;
   font-size: 0.875rem !important;
+
+  /* Rules/dividers track the theme instead of github-markdown-css's grey.
+     30% alpha matches the divide-primary/30 · secondary/30 used elsewhere. */
+  --md-rule: rgba(2, 48, 32, 0.3);
+  --md-quiet: rgba(2, 48, 32, 0.7);
+  /* #ffd700 is only 1.4:1 on white; this keeps the gold hue at 5.07:1. */
+  --md-link: #8a6a00;
 }
 
 .dark .markdown-body {
   color: var(--color-secondary) !important;
+  --md-rule: rgba(255, 255, 255, 0.3);
+  --md-quiet: rgba(255, 255, 255, 0.7);
+  --md-link: var(--color-accent);
+}
+
+.markdown-body h1,
+.markdown-body h2 {
+  border-bottom-color: var(--md-rule) !important;
+}
+
+.markdown-body hr {
+  height: 1px !important;
+  border: 0 !important;
+  background-color: var(--md-rule) !important;
 }
 
 .markdown-body h1 {
@@ -51,22 +72,27 @@
 
 /* Blockquotes */
 .markdown-body blockquote {
-  border-left: 4px solid #dfe2e5;
+  border-left: 2px solid var(--md-rule);
   padding-left: 1em;
-  color: #6a737d;
+  color: var(--md-quiet);
   margin: 1em 0;
 }
 
-.dark .markdown-body blockquote {
-  border-color: #555;
-  color: #aaa;
-}
-
-/* Lists */
+/* Lists — github-markdown-css already applies padding-left: 2em, so adding
+   margin-left on top double-indents every level. Set the indent once. */
 .markdown-body ul,
 .markdown-body ol {
-  margin-left: 2em;
+  margin-left: 0;
   margin-bottom: 1em;
+  padding-left: 1.4em;
+}
+
+/* Nested lists sit closer still; the parent indent already offsets them. */
+.markdown-body li > ul,
+.markdown-body li > ol {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-left: 1.2em;
 }
 
 .markdown-body ul {
@@ -100,6 +126,83 @@
 
 /* Links */
 .markdown-body a {
-  color: var(--color-accent);
+  color: var(--md-link);
   text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Inline SVG diagrams authored in CMS markdown */
+.markdown-body figure {
+  --fig-in: #4f93b8;
+  --fig-out: #5f9b43;
+  --fig-in-soft: rgba(79, 147, 184, 0.22);
+  --fig-out-soft: rgba(95, 155, 67, 0.22);
+  --fig-stroke: rgba(2, 48, 32, 0.45);
+  --fig-cell: rgba(2, 48, 32, 0.12);
+  --fig-rule: var(--md-rule);
+  --fig-fg: var(--color-primary);
+  --fig-muted: var(--md-quiet);
+
+  margin: 2rem 0;
+  padding: 1.25rem 1rem 1rem;
+  background: rgba(2, 48, 32, 0.04);
+  border: 1px solid var(--fig-rule);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.dark .markdown-body figure {
+  --fig-in: #8cc2de;
+  --fig-out: #a8d488;
+  --fig-in-soft: rgba(140, 194, 222, 0.2);
+  --fig-out-soft: rgba(168, 212, 136, 0.2);
+  --fig-stroke: rgba(255, 255, 255, 0.5);
+  --fig-cell: rgba(255, 255, 255, 0.16);
+  --fig-rule: var(--md-rule);
+  --fig-fg: var(--color-secondary);
+  --fig-muted: var(--md-quiet);
+
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Direct child only: caption links carry small inline icon SVGs. */
+.markdown-body figure > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-width: 460px;
+}
+
+.markdown-body .svg-text {
+  fill: var(--fig-fg);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.markdown-body .svg-muted {
+  fill: var(--fig-muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.markdown-body .fig-label {
+  margin: 0 0 0.75rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fig-muted);
+}
+
+.markdown-body figcaption {
+  margin-top: 0.85rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--fig-muted);
+}
+
+.markdown-body .fig-credit {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.6875rem;
+  font-style: normal;
+  opacity: 0.85;
 }
